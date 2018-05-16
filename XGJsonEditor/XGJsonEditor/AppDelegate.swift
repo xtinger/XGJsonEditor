@@ -11,23 +11,9 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
-        if let filePath = Bundle.main.path(forResource: "topics", ofType: "json") {
-            print("filePath OK")
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: filePath), options: .mappedIfSafe)
-                let decoder = JSONDecoder()
-                let todo = try decoder.decode(RootModel.self, from: data)
-                print("OK")
-            }
-            catch {
-                print("ERROR")
-            }
-            
-        }
+        
         
         
     }

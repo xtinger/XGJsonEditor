@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class QuestionChecksVariant: NSObject, Decodable {
+class QuestionChecksVariant: NSObject, Codable {
     var text: String?
     var isCorrect: Bool?
     // Этот текст будет показан, если чекбокс стоит и ответ верный, или если чекбокса нет и ответ неверный (опционально)
@@ -16,8 +16,8 @@ class QuestionChecksVariant: NSObject, Decodable {
     // Этот текст будет показан, если чекбокс стоит и ответ неверный, или если чекбокса нет и ответ верный (опционально)
     var incorrectComment: String?
     
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
+//    required init(from decoder: Decoder) throws {
+//        super.init()
+//    }
     
 }

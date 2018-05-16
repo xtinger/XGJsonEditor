@@ -9,13 +9,9 @@
 import Cocoa
 
 // Тема
-class Topic: NSObject, Decodable {
+class Topic: NSObject, Codable {
     var id: Int?
     var name: String?
     var lesson: Lesson?
     var test: TopicTest?
-    
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
 }

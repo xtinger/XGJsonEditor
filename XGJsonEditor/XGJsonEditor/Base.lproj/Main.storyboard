@@ -742,7 +742,7 @@
                                                                     </textFieldCell>
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
-                                                                        <tableCellView id="wSa-5d-ZmM" customClass="DateCell" customModule="XGJsonEditor" customModuleProvider="target">
+                                                                        <tableCellView identifier="DateCell" id="wSa-5d-ZmM" customClass="DateCell" customModule="XGJsonEditor" customModuleProvider="target">
                                                                             <rect key="frame" x="1" y="1" width="232" height="17"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
@@ -757,7 +757,7 @@
                                                                                 </textField>
                                                                             </subviews>
                                                                             <connections>
-                                                                                <outlet property="textField" destination="LD2-qQ-l8b" id="Zpk-Th-krc"/>
+                                                                                <outlet property="textField" destination="LD2-qQ-l8b" id="miq-BH-XbB"/>
                                                                             </connections>
                                                                         </tableCellView>
                                                                     </prototypeCellViews>
@@ -768,7 +768,7 @@
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
                                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="g6t-Nn-Qg8">
-                                                    <rect key="frame" x="1" y="113.45943093299866" width="225.77253723144531" height="15"/>
+                                                    <rect key="frame" x="1" y="113" width="225.77253723144531" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="STi-ZZ-ocT">
@@ -803,6 +803,9 @@
                             <constraint firstAttribute="bottom" secondItem="vop-hh-eTZ" secondAttribute="bottom" id="kLa-vB-Atf"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="outlineView" destination="84z-W7-TQT" id="xKf-Lb-ZGO"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -18,7 +18,17 @@ class QuestionInput: Question {
     // Пишем, если ответ НЕверный (опционально)
     var incorrectComment: String?
     
+    private enum CodingKeys: String, CodingKey {
+        case html, correctAnswer, correctComment, incorrectComment
+    }
+    
     required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.html = try container.decode(String.self, forKey: .html)
+        self.correctAnswer = try container.decode(String.self, forKey: .correctAnswer)
+        self.correctComment = try container.decode(String.self, forKey: .correctComment)
+        self.incorrectComment = try container.decode(String.self, forKey: .incorrectComment)
+        
         try super.init(from: decoder)
     }
 }

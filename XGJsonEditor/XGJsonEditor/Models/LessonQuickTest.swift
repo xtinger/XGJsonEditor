@@ -8,8 +8,10 @@
 
 import Cocoa
 
-class LessonQuickTest: NSObject, Decodable {
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
+class LessonQuickTest: Test {
+    // one question
+    
+//    required init(from decoder: Decoder) throws {
+//        super.init()
+//    }
 }

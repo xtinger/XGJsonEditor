@@ -10,13 +10,13 @@ import Cocoa
 
 // Тест по лекции
 // Test with one question
-class Lesson: NSObject, Decodable {
+class Lesson: NSObject, Codable {
     var id: Int?
     var name: String?
     var path: String?
-    var lessonQuickText: Question?
+    var lessonQuickText: LessonQuickTest?
     
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
+//    required init(from decoder: Decoder) throws {
+//        super.init()
+//    }
 }

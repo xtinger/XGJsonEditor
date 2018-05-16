@@ -8,10 +8,10 @@
 
 import Cocoa
 
-class QuestionGapsItem: NSObject, Decodable {
+class QuestionGapsItem: NSObject, Codable {
     var correctVariantNumber: Int?
     
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
+//    required init(from decoder: Decoder) throws {
+//        super.init()
+//    }
 }

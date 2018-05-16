@@ -9,11 +9,9 @@
 import Cocoa
 
 // тест по разделу
-class TopicTest: NSObject, Decodable {
-    var id: Int?
-    var questions: [Question]?
+class TopicTest: Test {
     
-    required init(from decoder: Decoder) throws {
-        super.init()
-    }
+//    required init(from decoder: Decoder) throws {
+//        super.init()
+//    }
 }
