@@ -28,6 +28,7 @@
 		92D94B4920AC4F14009C66EC /* QuestionPairsVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B4820AC4F14009C66EC /* QuestionPairsVariant.swift */; };
 		92D94B4B20AC500B009C66EC /* QuestionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B4A20AC500B009C66EC /* QuestionInput.swift */; };
 		92D94B4D20AC516F009C66EC /* TopicTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B4C20AC516F009C66EC /* TopicTest.swift */; };
+		92D94B4F20AC5312009C66EC /* RootModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B4E20AC5312009C66EC /* RootModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		92D94B4820AC4F14009C66EC /* QuestionPairsVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionPairsVariant.swift; sourceTree = "<group>"; };
 		92D94B4A20AC500B009C66EC /* QuestionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionInput.swift; sourceTree = "<group>"; };
 		92D94B4C20AC516F009C66EC /* TopicTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicTest.swift; sourceTree = "<group>"; };
+		92D94B4E20AC5312009C66EC /* RootModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 		92D94B2F20AC47B4009C66EC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				92D94B4E20AC5312009C66EC /* RootModel.swift */,
 				92D94B2D20AC456E009C66EC /* Section.swift */,
 				92D94B3020AC47CC009C66EC /* Topic.swift */,
 				92D94B3220AC481E009C66EC /* Lesson.swift */,
@@ -195,6 +198,7 @@
 				92D94B1E20AC404E009C66EC /* ViewController.swift in Sources */,
 				92D94B3720AC4907009C66EC /* LessonQuickTest.swift in Sources */,
 				92D94B3120AC47CC009C66EC /* Topic.swift in Sources */,
+				92D94B4F20AC5312009C66EC /* RootModel.swift in Sources */,
 				92D94B4320AC4DEC009C66EC /* QuestionGapsItem.swift in Sources */,
 				92D94B3920AC4997009C66EC /* Question.swift in Sources */,
 				92D94B3F20AC4B9B009C66EC /* QuestionGaps.swift in Sources */,
