@@ -19,4 +19,8 @@ class QuestionPairs: Question {
     var variantsHtml: String?
     // список описаний вариантов ответа
     var variants: [QuestionPairsVariant]?
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
 }

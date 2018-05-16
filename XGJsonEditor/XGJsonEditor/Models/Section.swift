@@ -9,7 +9,7 @@
 import Cocoa
 
 // раздел
-class Section: NSObject {
+class Section: NSObject, Decodable {
     var id: Int?
     var name: String?
     var path: String?

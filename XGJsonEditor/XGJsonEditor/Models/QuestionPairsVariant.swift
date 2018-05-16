@@ -8,9 +8,13 @@
 
 import Cocoa
 
-class QuestionPairsVariant: NSObject {
+class QuestionPairsVariant: NSObject, Decodable {
     //просто порядковый номер варианта [1..N]
     var number: Int?
     // текст варианта ответа
     var text: String?
+    
+    required init(from decoder: Decoder) throws {
+        super.init()
+    }
 }

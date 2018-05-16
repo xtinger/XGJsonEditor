@@ -15,4 +15,8 @@ class QuestionGaps: Question {
     var variants: [QuestionGapsVariant]?
     // список пропусков с указанием правильного варианта
     var items : [QuestionGapsItem]?
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
 }

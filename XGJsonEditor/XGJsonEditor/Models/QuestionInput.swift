@@ -17,4 +17,8 @@ class QuestionInput: Question {
     var correctComment: String?
     // Пишем, если ответ НЕверный (опционально)
     var incorrectComment: String?
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
 }

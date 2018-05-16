@@ -15,7 +15,11 @@ enum QuestionType: String {
     case input = "input"
 }
 
-class Question: NSObject {
+class Question: NSObject, Decodable {
     var id: Int?
     var type: QuestionType?
+    
+    required init(from decoder: Decoder) throws {
+        super.init()
+    }
 }

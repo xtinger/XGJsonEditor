@@ -8,6 +8,10 @@
 
 import Cocoa
 
-class QuestionGapsVariant: NSObject {
+class QuestionGapsVariant: NSObject, Decodable {
     var text: String?
+    
+    required init(from decoder: Decoder) throws {
+        super.init()
+    }
 }

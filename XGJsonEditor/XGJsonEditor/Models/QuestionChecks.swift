@@ -12,4 +12,8 @@ class QuestionChecks: Question {
     // Текст, который показывается перед вариантами с чекбоксами
     var text: String?
     var variants: [QuestionChecksVariant]?
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)   
+    }
 }

@@ -8,6 +8,8 @@
 
 import Cocoa
 
-class RootModel: NSObject {
+class RootModel: NSObject, Decodable {
     var sections: [Section]?
+    
+
 }
