@@ -80,7 +80,7 @@ extension ViewController: NSOutlineViewDataSource {
             return 2
         }
         if let test = item as? Test {
-            return test.questions?.count ?? 0
+            return test.questions.count
         }
         else {
             return 0
@@ -110,7 +110,7 @@ extension ViewController: NSOutlineViewDataSource {
             
         }
         if let test = item as? Test {
-            return test.questions?[index] ?? DateCell()
+            return test.questions[index]
         }
         return DateCell() // stub
     }

@@ -27,8 +27,5 @@ class QuestionGaps: Question {
         self.items = try container.decode([QuestionGapsItem].self, forKey: .items)
         try super.init(from: decoder)
     }
-    
-//    required init(from decoder: Decoder) throws {
-//        try super.init(from: decoder)
-//    }
+
 }

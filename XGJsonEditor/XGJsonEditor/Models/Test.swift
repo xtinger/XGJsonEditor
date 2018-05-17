@@ -10,7 +10,7 @@ import Cocoa
 
 class Test: NSObject, Codable {
     var id: Int?
-    var questions: [Question]?
+    var questions: [Question] = []
     
     enum QuestionsKey: CodingKey {
         case id, questions
@@ -48,7 +48,7 @@ class Test: NSObject, Codable {
         var container = encoder.container(keyedBy: QuestionsKey.self)
         try container.encode(id, forKey: .id)
         var arrayContainer = container.nestedUnkeyedContainer(forKey: .questions)
-        try arrayContainer.encode(contentsOf: questions!)
+        try arrayContainer.encode(contentsOf: questions)
 //        for question in questions! {
 //            if let type = question.type {
 //                switch type {

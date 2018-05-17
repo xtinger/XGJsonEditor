@@ -18,8 +18,4 @@ enum QuestionType: String, Codable {
 class Question: NSObject, Codable {
     var id: Int?
     var type: QuestionType?
-    
-//    required init(from decoder: Decoder) throws {
-//        super.init()
-//    }
 }

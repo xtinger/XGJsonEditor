@@ -11,7 +11,7 @@ import Cocoa
 class QuestionChecks: Question {
     // Текст, который показывается перед вариантами с чекбоксами
     var text: String?
-    var variants: [QuestionChecksVariant]?
+    var variants: [QuestionChecksVariant] = []
     
     enum CodingKeys: String, CodingKey {
         case text, variants
@@ -23,8 +23,12 @@ class QuestionChecks: Question {
         self.variants = try container.decode([QuestionChecksVariant].self, forKey: .variants)
         try super.init(from: decoder)
     }
-    
-//    required init(from decoder: Decoder) throws {
-//        try super.init(from: decoder)   
-//    }
+
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(text, forKey:.text)
+        var variantsContainer = container.nestedUnkeyedContainer(forKey: .variants)
+        try variantsContainer.encode(contentsOf: variants)
+    }
 }
