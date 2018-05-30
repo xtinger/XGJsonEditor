@@ -11,7 +11,7 @@ import Cocoa
 // Тема
 class Topic: NSObject, Codable {
     var id: Int?
-    var name: String?
+    @objc var name: String?
     var lesson: Lesson?
     var test: TopicTest?
 }

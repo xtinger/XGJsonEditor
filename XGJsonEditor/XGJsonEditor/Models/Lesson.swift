@@ -12,9 +12,9 @@ import Cocoa
 // Test with one question
 class Lesson: NSObject, Codable {
     var id: Int?
-    var name: String?
-    var path: String?
-    var lessonQuickText: LessonQuickTest?
+    @objc var name: String?
+    @objc var path: String?
+    var lessonQuickTest: LessonQuickTest?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()

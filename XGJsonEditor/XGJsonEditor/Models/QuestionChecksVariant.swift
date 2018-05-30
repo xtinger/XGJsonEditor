@@ -9,15 +9,16 @@
 import Cocoa
 
 class QuestionChecksVariant: NSObject, Codable {
-    var text: String?
-    var isCorrect: Bool?
+    @objc var text: String?
+    @objc var isCorrect: Bool = false
     // Этот текст будет показан, если чекбокс стоит и ответ верный, или если чекбокса нет и ответ неверный (опционально)
-    var correctComment: String?
+    @objc var correctComment: String?
     // Этот текст будет показан, если чекбокс стоит и ответ неверный, или если чекбокса нет и ответ верный (опционально)
-    var incorrectComment: String?
+    @objc var incorrectComment: String?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()
 //    }
+    
     
 }

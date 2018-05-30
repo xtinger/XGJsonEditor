@@ -9,6 +9,8 @@
 import Cocoa
 
 class Test: NSObject, Codable {
+    weak var parent: NSObject?
+    
     var id: Int?
     var questions: [Question] = []
     

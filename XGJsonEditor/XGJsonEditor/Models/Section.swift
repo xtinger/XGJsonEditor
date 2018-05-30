@@ -11,9 +11,13 @@ import Cocoa
 // раздел
 class Section: NSObject, Codable {
     var id: Int?
-    var name: String?
-    var path: String?
+    @objc var name: String?
+    @objc var path: String?
     var isFree: Bool?
     var topics: [Topic]?
-    var sectionTest: SectionTest?
+    var sectionTest: SectionTest? {
+        didSet {
+            sectionTest?.parent = self
+        }
+    }
 }

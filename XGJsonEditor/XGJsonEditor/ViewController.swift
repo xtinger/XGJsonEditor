@@ -11,6 +11,7 @@ import Cocoa
 class ViewController: NSViewController {
     
     @IBOutlet weak var outlineView: NSOutlineView!
+    @IBOutlet weak var editorContainerView: NSView!
     
     var rootModel : RootModel!
     
@@ -41,7 +42,7 @@ class ViewController: NSViewController {
                 let root = try decoder.decode(RootModel.self, from: data)
                 self.rootModel = root
                 print("OK")
-                saveData()
+//                saveData()
             }
             catch {
                 print("ERROR")
@@ -66,6 +67,52 @@ class ViewController: NSViewController {
 //        }
         
     }
+    
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        guard let outlineView = notification.object as? NSOutlineView else {
+            return
+        }
+        
+        let selectedIndex = outlineView.selectedRow
+        if let item = outlineView.item(atRow: selectedIndex) {
+            selectEditor(item)
+        }
+    }
+    
+    func selectEditor(_ item: Any) {
+        
+        saveData()
+        
+        for view in editorContainerView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        var viewController: NSViewController?
+
+        if let section = item as? Section {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorSectionVC")) as! EditorSectionVC
+            vc.nameTextField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: nil)
+            vc.pathTextField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "path", options: nil)
+            viewController = vc
+        }
+        
+        if let topic = item as? Topic {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorTopicVC")) as! EditorTopicVC
+            vc.nameTextField.bind(NSBindingName(rawValue: "value"), to: topic, withKeyPath: "name", options: nil)
+            viewController = vc
+        }
+        
+        if let questionChecksVariant = item as? QuestionChecksVariant {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionChecksVariantVC")) as! EditorQuestionChecksVariantVC
+            vc.model = questionChecksVariant
+            viewController = vc
+        }
+        
+        if let vc = viewController {
+            editorContainerView.addSubview(vc.view)
+            vc.view.addFillSuperviewConstraints()
+        }
+    }
 }
 
 extension ViewController: NSOutlineViewDataSource {
@@ -79,8 +126,14 @@ extension ViewController: NSOutlineViewDataSource {
         if let _ = item as? Topic {
             return 2
         }
+        if let _ = item as? Lesson {
+            return 1
+        }
         if let test = item as? Test {
             return test.questions.count
+        }
+        if let questionChecks = item as? QuestionChecks {
+            return questionChecks.variants.count
         }
         else {
             return 0
@@ -109,6 +162,20 @@ extension ViewController: NSOutlineViewDataSource {
             }
             
         }
+        if let lesson = item as? Lesson {
+            switch index {
+            case 0:
+                if let lessonQuickTest = lesson.lessonQuickTest {
+                    return lessonQuickTest
+                }
+            default:
+                break
+            }
+            
+        }
+        if let questionChecks = item as? QuestionChecks {
+            return questionChecks.variants[index]
+        }
         if let test = item as? Test {
             return test.questions[index]
         }
@@ -116,6 +183,9 @@ extension ViewController: NSOutlineViewDataSource {
     }
     
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+//        if let _ = item as? Question {
+//            return false
+//        }
         return true
     }
 }
@@ -127,20 +197,28 @@ extension ViewController: NSOutlineViewDelegate {
         let cell = (outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DateCell"), owner: self) as? DateCell)!
         
         if let textField = cell.textField {
-            if let section = item as? Section, let name = section.name{
-                textField.stringValue = name
+            if let section = item as? Section{
+                textField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: nil)
+//                textField.stringValue = name
             }
-            if let topic = item as? Topic, let name = topic.name{
-                textField.stringValue = name
+            if let topic = item as? Topic{
+                textField.bind(NSBindingName(rawValue: "value"), to: topic, withKeyPath: "name", options: nil)
             }
-            if let lesson = item as? Lesson, let name = lesson.name{
-                textField.stringValue = name
+            if let lesson = item as? Lesson{
+                textField.bind(NSBindingName(rawValue: "value"), to: lesson, withKeyPath: "name", options: nil)
+            }
+            if let _ = item as? LessonQuickTest{
+                textField.stringValue = "[Вопрос по лекции]"
             }
             if let _ = item as? TopicTest{
                 textField.stringValue = "[Тест]"
             }
             if let question = item as? Question, let type = question.type?.rawValue{
+//                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "type.rawValue", options: nil)
                 textField.stringValue = type
+            }
+            if let questionChecksVariant = item as? QuestionChecksVariant{
+                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
             }
             return cell
         }
@@ -148,4 +226,16 @@ extension ViewController: NSOutlineViewDelegate {
         return nil
     }
 }
+
+public extension NSView {
+    func addFillSuperviewConstraints() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        let viewsDict = ["view": self]
+        self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewsDict))
+        self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewsDict))
+        
+    }
+}
+
+
 
