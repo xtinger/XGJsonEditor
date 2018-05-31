@@ -133,6 +133,26 @@ class ViewController: NSViewController {
             viewController = vc
         }
         
+        if let questionChecksVariant = item as? QuestionGapsVariant {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsVariantVC")) as! EditorQuestionGapsVariantVC
+            let valueTransformer = HTMLToAttributedString()
+            
+            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+        
+        if let questionGapsItem = item as? QuestionGapsItem {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsItemVC")) as! EditorQuestionGapsItemVC
+            let valueTransformer = HTMLToAttributedString()
+            
+            vc.numberTextField.bind(NSBindingName(rawValue: "value"), to: questionGapsItem, withKeyPath: "correctVariantNumberBindable", options: nil)
+            vc.correctCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionGapsItem, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+            vc.incorrectCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionGapsItem, withKeyPath: "incorrectComment", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+        
         if let vc = viewController {
             editorContainerView.addSubview(vc.view)
             vc.view.addFillSuperviewConstraints()
@@ -267,9 +287,7 @@ extension ViewController: NSOutlineViewDelegate {
             }
             if let questionChecksVariant = item as? QuestionChecksVariant{
                 let valueTransformer = HTMLToAttributedString()
-                
                 textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
-                
 //                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
             }
             if let _ = item as? [QuestionGapsVariant] {

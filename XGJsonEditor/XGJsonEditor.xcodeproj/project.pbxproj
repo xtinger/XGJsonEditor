@@ -39,6 +39,7 @@
 		92E6D4D220BEFF5600167BC2 /* EditorBaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E6D4D120BEFF5600167BC2 /* EditorBaseVC.swift */; };
 		92E6D4D420BEFFD000167BC2 /* EditorQuestionChecksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E6D4D320BEFFD000167BC2 /* EditorQuestionChecksVC.swift */; };
 		92E6D4D820BF131700167BC2 /* HTMLToAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E6D4D720BF131700167BC2 /* HTMLToAttributedString.swift */; };
+		92F71D8420C03427003F6CD8 /* EditorQuestionGapsItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F71D8320C03427003F6CD8 /* EditorQuestionGapsItemVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		92E6D4D120BEFF5600167BC2 /* EditorBaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorBaseVC.swift; sourceTree = "<group>"; };
 		92E6D4D320BEFFD000167BC2 /* EditorQuestionChecksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionChecksVC.swift; sourceTree = "<group>"; };
 		92E6D4D720BF131700167BC2 /* HTMLToAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLToAttributedString.swift; sourceTree = "<group>"; };
+		92F71D8320C03427003F6CD8 /* EditorQuestionGapsItemVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionGapsItemVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,8 +120,8 @@
 				92D94B1D20AC404E009C66EC /* ViewController.swift */,
 				92E6D4D720BF131700167BC2 /* HTMLToAttributedString.swift */,
 				92E6D4CB20BEE50100167BC2 /* Editors */,
-				92D94B5020AC5430009C66EC /* Json */,
 				92D94B2F20AC47B4009C66EC /* Models */,
+				92D94B5020AC5430009C66EC /* Json */,
 			);
 			path = XGJsonEditor;
 			sourceTree = "<group>";
@@ -167,6 +169,7 @@
 				92E6D4CF20BEFEF000167BC2 /* EditorQuestionChecksVariantVC.swift */,
 				92B765A720C0170E00320A0B /* EditorQuestionGapsVC.swift */,
 				92B765A920C01F3700320A0B /* EditorQuestionGapsVariantVC.swift */,
+				92F71D8320C03427003F6CD8 /* EditorQuestionGapsItemVC.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				92B765A820C0170F00320A0B /* EditorQuestionGapsVC.swift in Sources */,
 				92D94B2C20AC44DE009C66EC /* DateCell.swift in Sources */,
 				92D94B3320AC481E009C66EC /* Lesson.swift in Sources */,
+				92F71D8420C03427003F6CD8 /* EditorQuestionGapsItemVC.swift in Sources */,
 				92E6D4D220BEFF5600167BC2 /* EditorBaseVC.swift in Sources */,
 				92D94B4D20AC516F009C66EC /* TopicTest.swift in Sources */,
 				92D94B4720AC4EC0009C66EC /* QuestionPairsItem.swift in Sources */,

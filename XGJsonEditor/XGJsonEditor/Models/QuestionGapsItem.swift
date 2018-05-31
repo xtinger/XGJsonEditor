@@ -9,7 +9,17 @@
 import Cocoa
 
 class QuestionGapsItem: NSObject, Codable {
-    var correctVariantNumber: Int?
+    var correctVariantNumber: Int = 0
+    
+    @objc var correctVariantNumberBindable: NSNumber {
+        get {
+            return NSNumber.init(value: correctVariantNumber)
+        }
+        set(newValue) {
+            correctVariantNumber = newValue.intValue
+        }
+    }
+
     @objc var correctComment: String?
     @objc var incorrectComment: String?
     

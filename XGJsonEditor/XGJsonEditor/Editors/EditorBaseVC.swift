@@ -18,8 +18,8 @@ class EditorBaseVC: NSViewController {
     
     override func awakeFromNib() {
         if self.view.layer != nil {
-            let color : CGColor = NSColor.white.cgColor
-            self.view.layer?.backgroundColor = color
+//            let color : CGColor = NSColor.white.cgColor
+//            self.view.layer?.backgroundColor = color
         }
     }
 
