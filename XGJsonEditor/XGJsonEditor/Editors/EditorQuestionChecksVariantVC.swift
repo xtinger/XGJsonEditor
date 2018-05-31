@@ -9,7 +9,9 @@
 import Cocoa
 
 class EditorQuestionChecksVariantVC: EditorBaseVC {
-    @objc weak var model: QuestionChecksVariant? {
+    @objc var text: String?
+    
+    @objc var model: QuestionChecksVariant? {
         willSet {
             willChangeValue(forKey: "model")
         }
@@ -17,4 +19,9 @@ class EditorQuestionChecksVariantVC: EditorBaseVC {
             didChangeValue(forKey: "model")
         }
     }
+    
+    @IBOutlet var textTextView: NSTextView!
+    @IBOutlet var correctCommentTextView: NSTextView!
+    @IBOutlet var incorrectCommentTextView: NSTextView!
+    
 }

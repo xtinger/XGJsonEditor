@@ -10,13 +10,13 @@ import Cocoa
 
 class QuestionInput: Question {
     // html содержимое вопроса
-    var html: String?
+    @objc var html: String?
     // текст правильного ответа
-    var correctAnswer: String?
+    @objc var correctAnswer: String?
     // Пишем, если ответ верный (опционально)
-    var correctComment: String?
+    @objc var correctComment: String?
     // Пишем, если ответ НЕверный (опционально)
-    var incorrectComment: String?
+    @objc var incorrectComment: String?
     
     private enum CodingKeys: String, CodingKey {
         case html, correctAnswer, correctComment, incorrectComment

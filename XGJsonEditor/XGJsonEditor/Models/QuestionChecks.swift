@@ -10,7 +10,7 @@ import Cocoa
 
 class QuestionChecks: Question {
     // Текст, который показывается перед вариантами с чекбоксами
-    var text: String?
+    @objc var text: String?
     var variants: [QuestionChecksVariant] = []
     
     enum CodingKeys: String, CodingKey {

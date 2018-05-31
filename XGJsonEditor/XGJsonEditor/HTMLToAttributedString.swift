@@ -14,6 +14,10 @@ class HTMLToAttributedString: ValueTransformer {
         return true
     }
     
+    override class func transformedValueClass() -> Swift.AnyClass {
+        return NSAttributedString.self
+    }
+    
     override func transformedValue(_ value: Any?) -> Any? {
         guard value != nil else {
             return nil
@@ -34,7 +38,22 @@ class HTMLToAttributedString: ValueTransformer {
         }
         
         let attrStr: NSAttributedString = value as! NSAttributedString
-        return attrStr.string
+        
+        let documentAttributes = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
+        
+        do {
+            let htmlData = try attrStr.data(from: NSMakeRange(0, attrStr.length), documentAttributes:documentAttributes)
+            if let htmlString = String(data:htmlData, encoding:String.Encoding.utf8) {
+                print(htmlString)
+                return htmlString
+            }
+            else {
+                return nil
+            }
+        }
+        catch {
+            return nil
+        }
     }
 }
 

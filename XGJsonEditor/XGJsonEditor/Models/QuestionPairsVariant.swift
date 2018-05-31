@@ -12,7 +12,7 @@ class QuestionPairsVariant: NSObject, Codable {
     //просто порядковый номер варианта [1..N]
     var number: Int?
     // текст варианта ответа
-    var text: String?
+    @objc var text: String?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()

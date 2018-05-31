@@ -102,9 +102,34 @@ class ViewController: NSViewController {
             viewController = vc
         }
         
+        if let questionChecks = item as? QuestionChecks {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionChecksVC")) as! EditorQuestionChecksVC
+            
+            let valueTransformer = HTMLToAttributedString()
+            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecks, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+        
         if let questionChecksVariant = item as? QuestionChecksVariant {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionChecksVariantVC")) as! EditorQuestionChecksVariantVC
-            vc.model = questionChecksVariant
+//            vc.text = questionChecksVariant.text
+//            vc.model = questionChecksVariant
+            let valueTransformer = HTMLToAttributedString()
+            
+            vc.textTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            vc.correctCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+            vc.incorrectCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "incorrectComment", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+        
+        if let questionChecks = item as? QuestionGaps {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsVC")) as! EditorQuestionGapsVC
+            
+            let valueTransformer = HTMLToAttributedString()
+            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecks, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            
             viewController = vc
         }
         
@@ -134,6 +159,12 @@ extension ViewController: NSOutlineViewDataSource {
         }
         if let questionChecks = item as? QuestionChecks {
             return questionChecks.variants.count
+        }
+        if let _ = item as? QuestionGaps {
+            return 2
+        }
+        if let array = item as? Array<Any> {
+            return array.count
         }
         else {
             return 0
@@ -175,6 +206,23 @@ extension ViewController: NSOutlineViewDataSource {
         }
         if let questionChecks = item as? QuestionChecks {
             return questionChecks.variants[index]
+        }
+        if let questionGaps = item as? QuestionGaps {
+            switch index {
+            case 0:
+                if let variants = questionGaps.variants {
+                    return variants
+                }
+            case 1:
+                if let items = questionGaps.items {
+                    return items
+                }
+            default:
+                break
+            }
+        }
+        if let array = item as? Array<Any> {
+            return array[index]
         }
         if let test = item as? Test {
             return test.questions[index]
@@ -218,7 +266,25 @@ extension ViewController: NSOutlineViewDelegate {
                 textField.stringValue = type
             }
             if let questionChecksVariant = item as? QuestionChecksVariant{
-                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
+                let valueTransformer = HTMLToAttributedString()
+                
+                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+                
+//                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
+            }
+            if let _ = item as? [QuestionGapsVariant] {
+                textField.stringValue = "[Варианты ответов]"
+            }
+            if let _ = item as? [QuestionGapsItem] {
+                textField.stringValue = "[Ответы]"
+            }
+            if let questionGapsVariant = item as? QuestionGapsVariant{
+                let valueTransformer = HTMLToAttributedString()
+                textField.bind(NSBindingName(rawValue: "value"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            }
+            if let questionGapsItem = item as? QuestionGapsItem{
+                let valueTransformer = HTMLToAttributedString()
+                textField.bind(NSBindingName(rawValue: "value"), to: questionGapsItem, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
             }
             return cell
         }

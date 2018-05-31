@@ -10,7 +10,7 @@ import Cocoa
 
 class QuestionGaps: Question {
     // html
-    var text: String?
+    @objc var text: String?
     // список названий на кнопках с вариантами
     var variants: [QuestionGapsVariant]?
     // список пропусков с указанием правильного варианта

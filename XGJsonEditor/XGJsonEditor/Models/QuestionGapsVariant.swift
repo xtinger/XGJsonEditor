@@ -9,7 +9,7 @@
 import Cocoa
 
 class QuestionGapsVariant: NSObject, Codable {
-    var text: String?
+    @objc var text: String?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()

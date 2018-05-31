@@ -1,5 +1,5 @@
 //
-//  EditorQuestionChecksVC.swift
+//  EditorQuestionGapsVC.swift
 //  XGJsonEditor
 //
 //  Created by Denis Voronov on 30/05/2018.
@@ -8,6 +8,6 @@
 
 import Cocoa
 
-class EditorQuestionChecksVC: EditorBaseVC {
+class EditorQuestionGapsVC: EditorBaseVC {
     @IBOutlet var textView: NSTextView!
 }

@@ -11,9 +11,9 @@ import Cocoa
 class QuestionPairsItem: NSObject, Codable {
     var correctVariantNumber: Int?
     // Этот текст будет показан, если ответ верный (опционально)
-    var correctComment: String?
+    @objc var correctComment: String?
     // Этот текст будет показан, если ответ неверный (опционально)
-    var incorrectComment: String?
+    @objc var incorrectComment: String?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()

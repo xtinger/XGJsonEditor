@@ -10,6 +10,8 @@ import Cocoa
 
 class QuestionGapsItem: NSObject, Codable {
     var correctVariantNumber: Int?
+    @objc var correctComment: String?
+    @objc var incorrectComment: String?
     
 //    required init(from decoder: Decoder) throws {
 //        super.init()

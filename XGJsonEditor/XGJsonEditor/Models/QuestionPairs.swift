@@ -10,9 +10,9 @@ import Cocoa
 
 class QuestionPairs: Question {
     // html содержимое или обычный текст (Установите соответствие...)
-    var text: String?
+    @objc var text: String?
     // html содержимое списка
-    var itemsHtml: String?
+    @objc var itemsHtml: String?
     // список описаний вопросов
     var items: [QuestionPairsItem]?
     // html содержимое списка с вариантами ответов
