@@ -14,17 +14,22 @@ class ViewController: NSViewController {
     @IBOutlet weak var editorContainerView: NSView!
     
     var rootModel : RootModel!
+    var documents: NSDocumentController = NSDocumentController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "EGEClient editor"
 
-        loadData()
+//        loadData()
         outlineView.delegate = self
         outlineView.dataSource = self
         
-        outlineView.reloadData()
+        if let url = UserDefaults.standard.url(forKey: "recentJson") {
+            loadData(url: url)
+        }
         
-        // Do any additional setup after loading the view.
+//        NSDocumentController.shared.openDocument(self)
     }
 
     override var representedObject: Any? {
@@ -32,21 +37,49 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+    
+    @IBAction func openDocument(_ sender: Any?) {
+        
+        let dialog = NSOpenPanel()
+        
+        let launcherLogPathWithTilde = "~/Documents" as NSString
+        let expandedLauncherLogPath = launcherLogPathWithTilde.expandingTildeInPath
+        dialog.directoryURL = NSURL.fileURL(withPath: expandedLauncherLogPath, isDirectory: true)
+        
+        dialog.title                   = "Choose a .json file";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseDirectories    = true;
+        dialog.canCreateDirectories    = true;
+        dialog.allowsMultipleSelection = false;
+        dialog.allowedFileTypes        = ["json"]
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let result = dialog.url {
+                loadData(url: result)
+            }
+        }
+    }
 
-    func loadData() {
-        if let filePath = Bundle.main.path(forResource: "topics", ofType: "json") {
-            print("filePath OK")
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: filePath), options: .mappedIfSafe)
-                let decoder = JSONDecoder()
-                let root = try decoder.decode(RootModel.self, from: data)
-                self.rootModel = root
-                print("OK")
-//                saveData()
-            }
-            catch {
-                print("ERROR")
-            }
+    func loadData(url: URL) {
+        //if let filePath = Bundle.main.path(forResource: "topics", ofType: "json") {
+        
+//        print("filePath OK")
+        do {
+            let data = try Data(contentsOf: url, options: .mappedIfSafe)
+            let decoder = JSONDecoder()
+            let root = try decoder.decode(RootModel.self, from: data)
+            self.rootModel = root
+            print("OK")
+            
+            UserDefaults.standard.set(url, forKey: "recentJson")
+            
+            outlineView.reloadData()
+            
+            //                saveData()
+        }
+        catch {
+            print(error)
         }
     }
     
@@ -162,6 +195,9 @@ class ViewController: NSViewController {
 
 extension ViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        guard self.rootModel != nil else {
+            return 0
+        }
         if item == nil, let sections = self.rootModel.sections{
             return sections.count
         }

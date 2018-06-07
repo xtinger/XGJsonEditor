@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92790EC220C95B8A00DC6962 /* ItemsHtmlStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC120C95B8A00DC6962 /* ItemsHtmlStructure.swift */; };
 		92B765A820C0170F00320A0B /* EditorQuestionGapsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B765A720C0170E00320A0B /* EditorQuestionGapsVC.swift */; };
 		92B765AA20C01F3700320A0B /* EditorQuestionGapsVariantVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B765A920C01F3700320A0B /* EditorQuestionGapsVariantVC.swift */; };
 		92D94B1C20AC404E009C66EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B1B20AC404E009C66EC /* AppDelegate.swift */; };
@@ -40,9 +41,12 @@
 		92E6D4D420BEFFD000167BC2 /* EditorQuestionChecksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E6D4D320BEFFD000167BC2 /* EditorQuestionChecksVC.swift */; };
 		92E6D4D820BF131700167BC2 /* HTMLToAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E6D4D720BF131700167BC2 /* HTMLToAttributedString.swift */; };
 		92F71D8420C03427003F6CD8 /* EditorQuestionGapsItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F71D8320C03427003F6CD8 /* EditorQuestionGapsItemVC.swift */; };
+		B46FE1E05C00CB660638F259 /* Pods_XGJsonEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F09E4BC7AC124733171BC3 /* Pods_XGJsonEditor.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8EA6FD54841333294CF05CDD /* Pods-XGJsonEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XGJsonEditor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XGJsonEditor/Pods-XGJsonEditor.debug.xcconfig"; sourceTree = "<group>"; };
+		92790EC120C95B8A00DC6962 /* ItemsHtmlStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsHtmlStructure.swift; sourceTree = "<group>"; };
 		92B765A720C0170E00320A0B /* EditorQuestionGapsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionGapsVC.swift; sourceTree = "<group>"; };
 		92B765A920C01F3700320A0B /* EditorQuestionGapsVariantVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionGapsVariantVC.swift; sourceTree = "<group>"; };
 		92D94B1820AC404E009C66EC /* XGJsonEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XGJsonEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +83,8 @@
 		92E6D4D320BEFFD000167BC2 /* EditorQuestionChecksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionChecksVC.swift; sourceTree = "<group>"; };
 		92E6D4D720BF131700167BC2 /* HTMLToAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLToAttributedString.swift; sourceTree = "<group>"; };
 		92F71D8320C03427003F6CD8 /* EditorQuestionGapsItemVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionGapsItemVC.swift; sourceTree = "<group>"; };
+		D4F09E4BC7AC124733171BC3 /* Pods_XGJsonEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XGJsonEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D786CFB637EA8C685A76AEAF /* Pods-XGJsonEditor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XGJsonEditor.release.xcconfig"; path = "Pods/Target Support Files/Pods-XGJsonEditor/Pods-XGJsonEditor.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,17 +92,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B46FE1E05C00CB660638F259 /* Pods_XGJsonEditor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A8370CB17220C02F9CE41D5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8EA6FD54841333294CF05CDD /* Pods-XGJsonEditor.debug.xcconfig */,
+				D786CFB637EA8C685A76AEAF /* Pods-XGJsonEditor.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8D27DCD15F8184BD1613756C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4F09E4BC7AC124733171BC3 /* Pods_XGJsonEditor.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		92D94B0F20AC404D009C66EC = {
 			isa = PBXGroup;
 			children = (
 				92D94B1A20AC404E009C66EC /* XGJsonEditor */,
 				92D94B1920AC404E009C66EC /* Products */,
+				1A8370CB17220C02F9CE41D5 /* Pods */,
+				8D27DCD15F8184BD1613756C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +173,7 @@
 				92D94B4620AC4EC0009C66EC /* QuestionPairsItem.swift */,
 				92D94B4820AC4F14009C66EC /* QuestionPairsVariant.swift */,
 				92D94B4A20AC500B009C66EC /* QuestionInput.swift */,
+				92790EC120C95B8A00DC6962 /* ItemsHtmlStructure.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -181,9 +208,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92D94B2820AC4050009C66EC /* Build configuration list for PBXNativeTarget "XGJsonEditor" */;
 			buildPhases = (
+				A85968ACC837121A9FDFC830 /* [CP] Check Pods Manifest.lock */,
 				92D94B1420AC404E009C66EC /* Sources */,
 				92D94B1520AC404E009C66EC /* Frameworks */,
 				92D94B1620AC404E009C66EC /* Resources */,
+				7ADBAC6747A50923CB8ABD0B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -240,6 +269,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7ADBAC6747A50923CB8ABD0B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-XGJsonEditor/Pods-XGJsonEditor-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XGJsonEditor/Pods-XGJsonEditor-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A85968ACC837121A9FDFC830 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-XGJsonEditor-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		92D94B1420AC404E009C66EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -254,6 +322,7 @@
 				92D94B4F20AC5312009C66EC /* RootModel.swift in Sources */,
 				92D94B4320AC4DEC009C66EC /* QuestionGapsItem.swift in Sources */,
 				92D94B3920AC4997009C66EC /* Question.swift in Sources */,
+				92790EC220C95B8A00DC6962 /* ItemsHtmlStructure.swift in Sources */,
 				92D94B3F20AC4B9B009C66EC /* QuestionGaps.swift in Sources */,
 				92B765A820C0170F00320A0B /* EditorQuestionGapsVC.swift in Sources */,
 				92D94B2C20AC44DE009C66EC /* DateCell.swift in Sources */,
@@ -407,6 +476,7 @@
 		};
 		92D94B2920AC4050009C66EC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EA6FD54841333294CF05CDD /* Pods-XGJsonEditor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = XGJsonEditor/XGJsonEditor.entitlements;
@@ -425,6 +495,7 @@
 		};
 		92D94B2A20AC4050009C66EC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D786CFB637EA8C685A76AEAF /* Pods-XGJsonEditor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = XGJsonEditor/XGJsonEditor.entitlements;

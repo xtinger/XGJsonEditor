@@ -20,6 +20,8 @@ class QuestionPairs: Question {
     // список описаний вариантов ответа
     var variants: [QuestionPairsVariant]?
     
+    var itemsHtmlStructure = ItemsHtmlStructure(html: "")
+    
     private enum CodingKeys: String, CodingKey {
         case text, itemsHtml, items, variantsHtml, variants
     }
@@ -32,6 +34,18 @@ class QuestionPairs: Question {
         self.variantsHtml = try container.decode(String.self, forKey: .variantsHtml)
         self.variants = try container.decode([QuestionPairsVariant].self, forKey: .variants)
         
+        if let html = itemsHtml {
+            self.itemsHtmlStructure = ItemsHtmlStructure(html: html)
+        }
+        
         try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let itemsHtmlString = itemsHtmlStructure.htmlOutput
+        try container.encode(itemsHtmlString, forKey: .itemsHtml)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import SwiftSoup
 
 @objc(HTMLToAttributedString)
 class HTMLToAttributedString: ValueTransformer {
@@ -44,19 +45,36 @@ class HTMLToAttributedString: ValueTransformer {
         do {
             let htmlData = try attrStr.data(from: NSMakeRange(0, attrStr.length), documentAttributes:documentAttributes)
             if let htmlString = String(data:htmlData, encoding:String.Encoding.utf8) {
-                print(htmlString)
-                return htmlString
+                if let bodyHtmlString = try cleanupHtmlString(htmlString: htmlString) {
+                    print(bodyHtmlString)
+                    return bodyHtmlString
+                }
+                else {
+                    print(htmlString)
+                    return htmlString
+                }
             }
             else {
                 return nil
             }
         }
         catch {
+            print(error)
             return nil
         }
     }
+    
+    func cleanupHtmlString(htmlString: String) throws -> String?{
+        let doc: Document = try SwiftSoup.parseBodyFragment(htmlString)
+        try doc.body()?.getElementsByTag("meta").remove()
+        try doc.body()?.getElementsByTag("style").remove()
+        try doc.body()?.getElementsByTag("title").remove()
+        try doc.body()?.getElementsByTag("p").removeAttr("class")
+        try doc.body()?.getElementsByTag("span").removeAttr("class")
+        let bodyHtmlString = try doc.body()?.html()
+        return bodyHtmlString
+    }
 }
-
 
 extension String {
     var html2Attributed: NSAttributedString? {
