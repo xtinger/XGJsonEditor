@@ -9,14 +9,31 @@
 import Cocoa
 import SwiftSoup
 
-class ItemsHtmlStructure: NSObject {
-    var title: String = ""
-    var questions: [String] = []
+class QuestionsStructureTitle: NSObject {
+    @objc var text: String
+    
+    required init(text: String) {
+        self.text = text
+    }
+}
+
+class QuestionsStructureElement: NSObject {
+    @objc var text: String
+    
+    required init(text: String) {
+        self.text = text
+    }
+}
+
+class QuestionsHtmlStructure: NSObject {
+    var title: QuestionsStructureTitle = QuestionsStructureTitle(text:"")
+    
+    var elements: [QuestionsStructureElement] = []
     
     var htmlOutput: String {
         get {
             do {
-                if title.isEmpty {
+                if title.text.isEmpty {
                     return ""
                 }
 
@@ -25,12 +42,12 @@ class ItemsHtmlStructure: NSObject {
                     .body()?
                     .appendElement("p")
                     .addClass("pairs_questions_title")
-                    .text(title)
+                    .text(title.text)
                 let ol = try p?
                     .appendElement("ol")
                     .addClass("pairs_questions")
-                try questions.forEach { (item) in
-                    try ol?.appendElement("li").text(item)
+                try elements.forEach { (question) in
+                    try ol?.appendElement("li").text(question.text)
                 }
                 if let p = p {
                     return try p.html()
@@ -49,14 +66,15 @@ class ItemsHtmlStructure: NSObject {
         do {
             let doc: Document = try SwiftSoup.parseBodyFragment(html)
             if let title = try doc.getElementsByClass("pairs_questions_title").first() {
-                self.title = title.ownText()
+                self.title.text = title.ownText()
             }
             if let questionElements = try doc.getElementsByClass("pairs_questions").first() {
-                var makeQuestions: [String] = []
+                var makeQuestions: [QuestionsStructureElement] = []
                 try questionElements.getElementsByTag("li").forEach { (listItem) in
-                    makeQuestions.append(listItem.ownText())
+                    let question = QuestionsStructureElement(text: listItem.ownText())
+                    makeQuestions.append(question)
                 }
-                self.questions = makeQuestions
+                self.elements = makeQuestions
             }
         }
         catch {

@@ -9,7 +9,17 @@
 import Cocoa
 
 class QuestionPairsItem: NSObject, Codable {
-    var correctVariantNumber: Int?
+    
+    var correctVariantNumber: Int = 0
+    @objc var correctVariantNumberBindable: NSNumber {
+        get {
+            return NSNumber.init(value: correctVariantNumber)
+        }
+        set(newValue) {
+            correctVariantNumber = newValue.intValue
+        }
+    }
+    
     // Этот текст будет показан, если ответ верный (опционально)
     @objc var correctComment: String?
     // Этот текст будет показан, если ответ неверный (опционально)

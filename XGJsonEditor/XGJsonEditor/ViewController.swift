@@ -14,6 +14,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var editorContainerView: NSView!
     
     var rootModel : RootModel!
+    var treeRoot : NSObject!
     var documents: NSDocumentController = NSDocumentController()
     
     override func viewDidLoad() {
@@ -70,6 +71,8 @@ class ViewController: NSViewController {
             let decoder = JSONDecoder()
             let root = try decoder.decode(RootModel.self, from: data)
             self.rootModel = root
+//            self.treeRoot = root.sections!.first!.topics!.first!.test?.questions[1]
+            self.treeRoot = root
             print("OK")
             
             UserDefaults.standard.set(url, forKey: "recentJson")
@@ -186,10 +189,66 @@ class ViewController: NSViewController {
             viewController = vc
         }
         
+        if let questionPairsItem = item as? QuestionPairsItem {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsItemVC")) as! EditorQuestionGapsItemVC
+            
+            let valueTransformer = HTMLToAttributedString()
+            vc.numberTextField.bind(NSBindingName(rawValue: "value"), to: questionPairsItem, withKeyPath: "correctVariantNumberBindable", options: nil)
+            vc.correctCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionPairsItem, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+            vc.incorrectCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionPairsItem, withKeyPath: "incorrectComment", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+        
+        if let questionPairs = item as? QuestionPairs {
+            viewController = ViewController.makeSingleTextViewEditor(title: "Текст вопроса:", bindingModel: questionPairs, withKeyPath: "text")
+        }
+        if let question = item as? QuestionsStructureElement {
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст:", bindingModel: question, withKeyPath: "text")
+        }
+        if let questionsStructureTitle = item as? QuestionsStructureTitle {
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст:", bindingModel: questionsStructureTitle, withKeyPath: "text")
+        }
+        if let variantsStructureTitle = item as? VariantsStructureTitle {
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст:", bindingModel: variantsStructureTitle, withKeyPath: "text")
+        }
+        if let question = item as? VariantsStructureElement {
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст:", bindingModel: question, withKeyPath: "text")
+        }
+        if let questionPairsVariant = item as? QuestionPairsVariant {
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст:", bindingModel: questionPairsVariant, withKeyPath: "text")
+        }
+        
+        if let questionInput = item as? QuestionInput {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionInput")) as! EditorQuestionInput
+            
+            let valueTransformer = HTMLToAttributedString()
+            vc.questionTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionInput, withKeyPath: "html", options: [.valueTransformer: valueTransformer])
+            vc.answerTextField.bind(NSBindingName(rawValue: "value"), to: questionInput, withKeyPath: "correctAnswer", options: nil)
+            vc.correctCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionInput, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+            vc.incorrectCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionInput, withKeyPath: "incorrectComment", options: [.valueTransformer: valueTransformer])
+            
+            viewController = vc
+        }
+
         if let vc = viewController {
             editorContainerView.addSubview(vc.view)
             vc.view.addFillSuperviewConstraints()
         }
+    }
+    
+    static func makeSingleTextFieldEditor(title: String, bindingModel model: Any, withKeyPath keyPath: String) -> NSViewController {
+        let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "SingleTextFieldEditor")) as! SingleTextFieldEditor
+        vc.textField.bind(NSBindingName(rawValue: "value"), to: model, withKeyPath: keyPath, options: nil)
+        vc.titleTextField.stringValue = title
+        return vc
+    }
+    
+    static func makeSingleTextViewEditor(title: String, bindingModel model: Any, withKeyPath keyPath: String) -> NSViewController {
+        let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "SingleTextViewEditor")) as! SingleTextViewEditor
+        vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: model, withKeyPath: keyPath, options: nil)
+        vc.titleTextField.stringValue = title
+        return vc
     }
 }
 
@@ -198,9 +257,20 @@ extension ViewController: NSOutlineViewDataSource {
         guard self.rootModel != nil else {
             return 0
         }
-        if item == nil, let sections = self.rootModel.sections{
-            return sections.count
+        
+        if item == nil {
+            if let array = self.treeRoot as? Array<Any> {
+                return array.count
+            }
+            if let root = self.treeRoot as? RootModel {
+                return root.sections!.count
+            }
+            return 1
         }
+        
+//        if item == nil, let sections = self.rootModel.sections{
+//            return sections.count
+//        }
         if let section = item as? Section, let topics = section.topics {
             return topics.count
         }
@@ -219,6 +289,15 @@ extension ViewController: NSOutlineViewDataSource {
         if let _ = item as? QuestionGaps {
             return 2
         }
+        if let _ = item as? QuestionPairs {
+            return 4
+        }
+        if let _ = item as? QuestionsHtmlStructure {
+            return 2
+        }
+        if let _ = item as? VariantsHtmlStructure {
+            return 2
+        }
         if let array = item as? Array<Any> {
             return array.count
         }
@@ -228,9 +307,16 @@ extension ViewController: NSOutlineViewDataSource {
     }
     
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if item == nil, let sections = self.rootModel.sections{
-            return sections[index]
+        if item == nil {
+            if let array = self.treeRoot as? Array<Any> {
+                return array[index]
+            }
+            if let root = self.treeRoot as? RootModel {
+                return root.sections![index]
+            }
+            return self.treeRoot
         }
+
         if let section = item as? Section, let topics = section.topics{
             return topics[index]
         }
@@ -277,6 +363,44 @@ extension ViewController: NSOutlineViewDataSource {
                 break
             }
         }
+        if let questionPairs = item as? QuestionPairs {
+            switch index {
+            case 0:
+                return questionPairs.itemsHtmlStructure
+            case 1:
+                if let items = questionPairs.items {
+                    return items
+                }
+            case 2:
+                return questionPairs.variantHtmlStructure
+            case 3:
+                if let variants = questionPairs.variants {
+                    return variants
+                }
+            default:
+                break
+            }
+        }
+        if let questionsHtmlStructure = item as? QuestionsHtmlStructure {
+            switch index {
+            case 0:
+                return questionsHtmlStructure.title
+            case 1:
+                return questionsHtmlStructure.elements
+            default:
+                break
+            }
+        }
+        if let variantsHtmlStructure = item as? VariantsHtmlStructure {
+            switch index {
+            case 0:
+                return variantsHtmlStructure.title
+            case 1:
+                return variantsHtmlStructure.elements
+            default:
+                break
+            }
+        }
         if let array = item as? Array<Any> {
             return array[index]
         }
@@ -302,43 +426,87 @@ extension ViewController: NSOutlineViewDelegate {
         
         if let textField = cell.textField {
             if let section = item as? Section{
-                textField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: nil)
+                let valueTransformer = PrefixValueTransformer(prefix: "РАЗДЕЛ:")
+                textField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
 //                textField.stringValue = name
             }
-            if let topic = item as? Topic{
-                textField.bind(NSBindingName(rawValue: "value"), to: topic, withKeyPath: "name", options: nil)
+            else if let topic = item as? Topic{
+                let valueTransformer = PrefixValueTransformer(prefix: "ТЕМА:")
+                textField.bind(NSBindingName(rawValue: "value"), to: topic, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
             }
-            if let lesson = item as? Lesson{
-                textField.bind(NSBindingName(rawValue: "value"), to: lesson, withKeyPath: "name", options: nil)
+            else if let lesson = item as? Lesson{
+                let valueTransformer = PrefixValueTransformer(prefix: "ЛЕКЦИЯ:")
+                textField.bind(NSBindingName(rawValue: "value"), to: lesson, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
             }
-            if let _ = item as? LessonQuickTest{
+            else if let _ = item as? LessonQuickTest{
                 textField.stringValue = "[Вопрос по лекции]"
             }
-            if let _ = item as? TopicTest{
+            else if let _ = item as? TopicTest{
                 textField.stringValue = "[Тест]"
             }
-            if let question = item as? Question, let type = question.type?.rawValue{
+            else if let question = item as? Question, let type = question.type?.rawValue{
 //                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "type.rawValue", options: nil)
                 textField.stringValue = type
             }
-            if let questionChecksVariant = item as? QuestionChecksVariant{
+            else if let questionChecksVariant = item as? QuestionChecksVariant {
                 let valueTransformer = HTMLToAttributedString()
                 textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
 //                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
             }
-            if let _ = item as? [QuestionGapsVariant] {
+            else if let _ = item as? [QuestionGapsVariant] {
                 textField.stringValue = "[Варианты ответов]"
             }
-            if let _ = item as? [QuestionGapsItem] {
+            else if let _ = item as? [QuestionGapsItem] {
                 textField.stringValue = "[Ответы]"
             }
-            if let questionGapsVariant = item as? QuestionGapsVariant{
+            else if let questionGapsVariant = item as? QuestionGapsVariant {
                 let valueTransformer = HTMLToAttributedString()
                 textField.bind(NSBindingName(rawValue: "value"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
             }
-            if let questionGapsItem = item as? QuestionGapsItem{
+            else if let questionGapsItem = item as? QuestionGapsItem {
                 let valueTransformer = HTMLToAttributedString()
                 textField.bind(NSBindingName(rawValue: "value"), to: questionGapsItem, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+            }
+            else if let _ = item as? QuestionsHtmlStructure {
+                textField.stringValue = "[Оформление вопроса]"
+//                textField.bind(NSBindingName(rawValue: "value"), to: structure, withKeyPath: "title", options: nil)
+            }
+            else if let _ = item as? VariantsHtmlStructure {
+                textField.stringValue = "[Оформление вариантов]"
+//                textField.bind(NSBindingName(rawValue: "value"), to: structure, withKeyPath: "title", options: nil)
+            }
+            else if let title = item as? QuestionsStructureTitle {
+                textField.bind(NSBindingName(rawValue: "value"), to: title, withKeyPath: "text", options: nil)
+            }
+            else if let title = item as? VariantsStructureTitle {
+                textField.bind(NSBindingName(rawValue: "value"), to: title, withKeyPath: "text", options: nil)
+            }
+            else if let question = item as? QuestionsStructureElement {
+                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "text", options: nil)
+            }
+            else if let question = item as? VariantsStructureElement {
+                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "text", options: nil)
+            }
+            else if let _ = item as? [QuestionPairsItem] {
+                textField.stringValue = "[Вопросы]"
+            }
+            else if let item = item as? QuestionPairsItem {
+                textField.bind(NSBindingName(rawValue: "value"), to: item, withKeyPath: "correctVariantNumberBindable", options: nil)
+            }
+            else if let _ = item as? [QuestionsStructureElement] {
+                textField.stringValue = "[Оформление вопроса]"
+            }
+            else if let _ = item as? [VariantsStructureElement] {
+                textField.stringValue = "[Оформление вариантов]"
+            }
+            else if let _ = item as? [QuestionPairsVariant] {
+                textField.stringValue = "[Варианты]"
+            }
+            else if let variant = item as? QuestionPairsVariant {
+                textField.bind(NSBindingName(rawValue: "value"), to: variant, withKeyPath: "text", options: nil)
+            }
+            else {
+                textField.stringValue = String(describing: item)
             }
             return cell
         }

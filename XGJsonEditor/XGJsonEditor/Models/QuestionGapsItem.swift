@@ -9,8 +9,8 @@
 import Cocoa
 
 class QuestionGapsItem: NSObject, Codable {
-    var correctVariantNumber: Int = 0
     
+    var correctVariantNumber: Int = 0
     @objc var correctVariantNumberBindable: NSNumber {
         get {
             return NSNumber.init(value: correctVariantNumber)
