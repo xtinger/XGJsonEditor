@@ -15,6 +15,7 @@
 		92B765AA20C01F3700320A0B /* EditorQuestionGapsVariantVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B765A920C01F3700320A0B /* EditorQuestionGapsVariantVC.swift */; };
 		92D44D9F20CADE2B00AE1050 /* PrefixValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D44D9E20CADE2B00AE1050 /* PrefixValueTransformer.swift */; };
 		92D44DA220CAE22000AE1050 /* EditorQuestionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D44DA120CAE22000AE1050 /* EditorQuestionInput.swift */; };
+		92D44DA420CAEE7F00AE1050 /* IDGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D44DA320CAEE7F00AE1050 /* IDGenerator.swift */; };
 		92D94B1C20AC404E009C66EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B1B20AC404E009C66EC /* AppDelegate.swift */; };
 		92D94B1E20AC404E009C66EC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D94B1D20AC404E009C66EC /* ViewController.swift */; };
 		92D94B2020AC4050009C66EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D94B1F20AC4050009C66EC /* Assets.xcassets */; };
@@ -59,6 +60,7 @@
 		92B765A920C01F3700320A0B /* EditorQuestionGapsVariantVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorQuestionGapsVariantVC.swift; sourceTree = "<group>"; };
 		92D44D9E20CADE2B00AE1050 /* PrefixValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixValueTransformer.swift; sourceTree = "<group>"; };
 		92D44DA120CAE22000AE1050 /* EditorQuestionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorQuestionInput.swift; sourceTree = "<group>"; };
+		92D44DA320CAEE7F00AE1050 /* IDGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDGenerator.swift; sourceTree = "<group>"; };
 		92D94B1820AC404E009C66EC /* XGJsonEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XGJsonEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92D94B1B20AC404E009C66EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		92D94B1D20AC404E009C66EC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				92D94B1F20AC4050009C66EC /* Assets.xcassets */,
 				92D94B2420AC4050009C66EC /* Info.plist */,
 				92D94B2520AC4050009C66EC /* XGJsonEditor.entitlements */,
+				92D44DA320CAEE7F00AE1050 /* IDGenerator.swift */,
 				92D94B2B20AC44DE009C66EC /* DateCell.swift */,
 				92D94B2120AC4050009C66EC /* Main.storyboard */,
 				92D94B1D20AC404E009C66EC /* ViewController.swift */,
@@ -368,6 +371,7 @@
 				92D94B3B20AC49D9009C66EC /* QuestionChecks.swift in Sources */,
 				92D94B3D20AC4AF4009C66EC /* QuestionChecksVariant.swift in Sources */,
 				92D94B1C20AC404E009C66EC /* AppDelegate.swift in Sources */,
+				92D44DA420CAEE7F00AE1050 /* IDGenerator.swift in Sources */,
 				92D94B5520AC6F69009C66EC /* Test.swift in Sources */,
 				92D94B2E20AC456E009C66EC /* Section.swift in Sources */,
 				92D94B4B20AC500B009C66EC /* QuestionInput.swift in Sources */,

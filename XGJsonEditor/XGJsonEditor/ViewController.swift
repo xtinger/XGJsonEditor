@@ -13,6 +13,12 @@ class ViewController: NSViewController {
     @IBOutlet weak var outlineView: NSOutlineView!
     @IBOutlet weak var editorContainerView: NSView!
     
+    @IBOutlet weak var buttonAdd: NSButton!
+    @IBOutlet weak var buttonCheck: NSButton!
+    @IBOutlet weak var buttonGap: NSButton!
+    @IBOutlet weak var buttonInput: NSButton!
+    @IBOutlet weak var buttonPairs: NSButton!
+    
     var rootModel : RootModel!
     var treeRoot : NSObject!
     var documents: NSDocumentController = NSDocumentController()
@@ -25,6 +31,8 @@ class ViewController: NSViewController {
 //        loadData()
         outlineView.delegate = self
         outlineView.dataSource = self
+        
+        resetButtons()
         
         if let url = UserDefaults.standard.url(forKey: "recentJson") {
             loadData(url: url)
@@ -112,7 +120,46 @@ class ViewController: NSViewController {
         let selectedIndex = outlineView.selectedRow
         if let item = outlineView.item(atRow: selectedIndex) {
             selectEditor(item)
+            setupActions(item)
         }
+    }
+    
+    func resetButtons() {
+        buttonAdd.isHidden = true
+        buttonCheck.isHidden = true
+        buttonGap.isHidden = true
+        buttonInput.isHidden = true
+        buttonPairs.isHidden = true
+    }
+    
+    func setupActions(_ item: Any) {
+        resetButtons()
+
+        if let _ = item as? Section {
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? Test {
+            buttonCheck.isHidden = false
+            buttonGap.isHidden = false
+            buttonInput.isHidden = false
+            buttonPairs.isHidden = false
+        }
+    }
+    
+    @IBAction func buttonAddClicked(_ sender: Any) {
+        let item = outlineView.item(atRow: outlineView.selectedRow)
+        
+        let parent = outlineView.parent(forItem: item)
+        
+        if let section = item as? Section {
+            let index = rootModel.sections?.index(of: section)
+            let newSection = Section.buildSection()
+            rootModel.sections?.insert(newSection, at: index!.advanced(by: 1))
+            outlineView.reloadItem(parent)
+        }
+        
+
     }
     
     func selectEditor(_ item: Any) {
@@ -512,6 +559,10 @@ extension ViewController: NSOutlineViewDelegate {
         }
         
         return nil
+    }
+    
+    public func outlineView(_ outlineView: NSOutlineView, didClick tableColumn: NSTableColumn) {
+        
     }
 }
 

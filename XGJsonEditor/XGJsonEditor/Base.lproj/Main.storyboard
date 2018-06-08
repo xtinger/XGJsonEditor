@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -716,14 +717,71 @@
                                         <rect key="frame" x="0.0" y="0.0" width="237" height="270"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
+                                            <stackView distribution="fillProportionally" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3mq-eo-A5a">
+                                                <rect key="frame" x="20" y="240" width="197" height="30"/>
+                                                <subviews>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xrQ-Iu-1Pl">
+                                                        <rect key="frame" x="-6" y="2" width="101" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="Добавить" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5Tz-Wu-K3F">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="buttonAddClicked:" target="XfG-lQ-9wD" id="ZQA-p0-eAH"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oPx-Qq-cjU">
+                                                        <rect key="frame" x="-6" y="2" width="77" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="check" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3iK-PA-wuM">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                    </button>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Y6-fS-odc">
+                                                        <rect key="frame" x="-6" y="2" width="63" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="gap" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fpo-Lz-KfE">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                    </button>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8H0-yd-TIP">
+                                                        <rect key="frame" x="-6" y="2" width="71" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="input" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pll-tW-0AY">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                    </button>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R0D-6m-NNF">
+                                                        <rect key="frame" x="-6" y="2" width="70" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="pairs" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Tgt-3b-87M">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                    </button>
+                                                </subviews>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BrD-XE-pX4">
-                                                <rect key="frame" x="0.0" y="0.0" width="237" height="270"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="237" height="240"/>
                                                 <clipView key="contentView" drawsBackground="NO" id="6qv-U2-YZC">
-                                                    <rect key="frame" x="1" y="1" width="235" height="268"/>
+                                                    <rect key="frame" x="1" y="1" width="235" height="238"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="mor-gV-1Eo" id="84z-W7-TQT">
-                                                            <rect key="frame" x="0.0" y="0.0" width="235" height="268"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="235" height="238"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="2" height="3"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -784,10 +842,14 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="BrD-XE-pX4" secondAttribute="trailing" id="7AA-aq-Kfy"/>
-                                            <constraint firstItem="BrD-XE-pX4" firstAttribute="top" secondItem="21j-9N-9dj" secondAttribute="top" id="RqL-cl-bxp"/>
+                                            <constraint firstItem="BrD-XE-pX4" firstAttribute="top" secondItem="3mq-eo-A5a" secondAttribute="bottom" id="Ben-9r-iJJ"/>
+                                            <constraint firstItem="3mq-eo-A5a" firstAttribute="top" secondItem="21j-9N-9dj" secondAttribute="top" id="PB6-aO-IS4"/>
+                                            <constraint firstItem="BrD-XE-pX4" firstAttribute="top" secondItem="21j-9N-9dj" secondAttribute="top" constant="30" id="RqL-cl-bxp"/>
                                             <constraint firstAttribute="bottom" secondItem="BrD-XE-pX4" secondAttribute="bottom" id="Sb0-Ud-mrQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="3mq-eo-A5a" secondAttribute="trailing" constant="20" id="YBv-4L-kTx"/>
                                             <constraint firstItem="BrD-XE-pX4" firstAttribute="leading" secondItem="21j-9N-9dj" secondAttribute="leading" id="sBC-GR-FCi"/>
                                             <constraint firstAttribute="width" constant="300" id="tMJ-xJ-kaz"/>
+                                            <constraint firstItem="3mq-eo-A5a" firstAttribute="leading" secondItem="21j-9N-9dj" secondAttribute="leading" constant="20" id="vhG-E1-JeP"/>
                                         </constraints>
                                     </customView>
                                     <customView id="TmC-PI-itQ">
@@ -820,6 +882,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="buttonAdd" destination="xrQ-Iu-1Pl" id="gjA-1a-cfJ"/>
+                        <outlet property="buttonCheck" destination="oPx-Qq-cjU" id="iNL-Ti-XCk"/>
+                        <outlet property="buttonGap" destination="7Y6-fS-odc" id="K4W-c7-N28"/>
+                        <outlet property="buttonInput" destination="8H0-yd-TIP" id="F0N-G5-kiu"/>
+                        <outlet property="buttonPairs" destination="R0D-6m-NNF" id="qoS-Fw-Pbz"/>
                         <outlet property="editorContainerView" destination="oqf-Gy-ga2" id="YDa-KA-L3n"/>
                         <outlet property="outlineView" destination="84z-W7-TQT" id="xKf-Lb-ZGO"/>
                     </connections>

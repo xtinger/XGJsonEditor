@@ -22,6 +22,10 @@ class Test: NSObject, Codable {
         case type = "type"
     }
     
+    override init() {
+        
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: QuestionsKey.self)
         self.id = try container.decode(Int.self, forKey: QuestionsKey.id)

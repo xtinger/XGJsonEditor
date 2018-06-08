@@ -19,4 +19,13 @@ class Lesson: NSObject, Codable {
 //    required init(from decoder: Decoder) throws {
 //        super.init()
 //    }
+    
+    static func buildLesson() -> Lesson {
+        let lesson = Lesson()
+        lesson.id = IDGenerator.generate()
+        lesson.name = ""
+        lesson.path = ""
+        lesson.lessonQuickTest = LessonQuickTest()
+        return lesson
+    }
 }

@@ -20,4 +20,15 @@ class Section: NSObject, Codable {
             sectionTest?.parent = self
         }
     }
+    
+    static func buildSection() -> Section {
+        let section = Section()
+        section.id = IDGenerator.generate()
+        section.name = ""
+        section.path = ""
+        section.topics = [Topic.buildTopic()]
+        section.isFree = false
+        section.sectionTest = SectionTest()
+        return section
+    }
 }

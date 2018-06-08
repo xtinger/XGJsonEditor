@@ -14,4 +14,13 @@ class Topic: NSObject, Codable {
     @objc var name: String?
     var lesson: Lesson?
     var test: TopicTest?
+    
+    static func buildTopic() -> Topic {
+        let topic = Topic()
+        topic.id = IDGenerator.generate()
+        topic.name = ""
+        topic.lesson = Lesson.buildLesson()
+        topic.test = TopicTest()
+        return topic
+    }
 }
