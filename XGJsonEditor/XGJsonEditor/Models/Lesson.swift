@@ -33,3 +33,34 @@ extension Lesson: Creatable {
     }
 }
 
+extension Lesson: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension Lesson: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = PrefixValueTransformer(prefix: "ЛЕКЦИЯ:")
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+extension Lesson: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 1
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            if let lessonQuickTest = lessonQuickTest {
+                return lessonQuickTest
+            }
+        default:
+            break
+        }
+        return nil
+    }
+}
+

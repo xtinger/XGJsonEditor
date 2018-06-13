@@ -18,3 +18,16 @@ class QuestionPairsVariant: NSObject, Codable {
 //        super.init()
 //    }
 }
+
+extension QuestionPairsVariant: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionPairsVariant: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: nil)
+    }
+}
+

@@ -19,3 +19,11 @@ class Question: NSObject, Codable {
     var id: Int?
     var type: QuestionType?
 }
+
+extension Question: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        if let type = self.type?.rawValue {
+            textField.stringValue = type
+        }
+    }
+}

@@ -70,3 +70,20 @@ class Test: NSObject, Codable {
         
     }
 }
+
+extension Test: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension Test: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return questions.count
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        return questions[index]
+    }
+}
+

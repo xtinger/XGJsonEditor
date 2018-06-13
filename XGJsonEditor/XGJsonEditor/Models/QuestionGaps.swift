@@ -42,6 +42,36 @@ extension QuestionGaps: Creatable {
     class func create<T>(type: T.Type) -> T {
         let created = QuestionGaps()
         created.type = .gaps
+        created.variants = [QuestionGapsVariant.create()]
+        created.items = [QuestionGapsItem.create()]
         return created as! T
+    }
+}
+
+extension QuestionGaps: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension QuestionGaps: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 2
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            if let variants = variants {
+                return variants
+            }
+        case 1:
+            if let items = items {
+                return items
+            }
+        default:
+            return nil
+        }
+        return nil
     }
 }

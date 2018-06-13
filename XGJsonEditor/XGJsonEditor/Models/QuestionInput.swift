@@ -48,3 +48,10 @@ extension QuestionInput: Creatable {
         return created as! T
     }
 }
+
+extension QuestionInput: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+

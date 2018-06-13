@@ -27,3 +27,32 @@ class QuestionGapsItem: NSObject, Codable {
 //        super.init()
 //    }
 }
+
+extension QuestionGapsItem: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionGapsItem()
+        return created as! T
+    }
+}
+
+extension QuestionGapsItem: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionGapsItem: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = HTMLToAttributedString()
+        valueTransformer.showEmptyMessage = true
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+
+
+

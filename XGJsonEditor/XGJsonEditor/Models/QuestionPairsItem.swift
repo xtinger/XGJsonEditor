@@ -29,3 +29,18 @@ class QuestionPairsItem: NSObject, Codable {
 //        super.init()
 //    }
 }
+
+extension QuestionPairsItem: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionPairsItem: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "correctVariantNumberBindable", options: nil)
+    }
+}
+
+
+

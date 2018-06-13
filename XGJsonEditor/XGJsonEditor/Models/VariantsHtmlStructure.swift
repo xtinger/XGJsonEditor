@@ -17,11 +17,38 @@ class VariantsStructureTitle: NSObject {
     }
 }
 
+extension VariantsStructureTitle: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = EmptyTextTransformer()
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+extension VariantsStructureTitle: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+
 class VariantsStructureElement: NSObject {
     @objc var text: String
     
     required init(text: String) {
         self.text = text
+    }
+}
+
+extension VariantsStructureElement: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension VariantsStructureElement: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = EmptyTextTransformer()
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
     }
 }
 
@@ -82,6 +109,29 @@ class VariantsHtmlStructure: NSObject {
             
         }
     }
-    
-    
 }
+
+extension VariantsHtmlStructure: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.stringValue = "[Оформление вариантов]"
+    }
+}
+
+extension VariantsHtmlStructure: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 2
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            return title
+        case 1:
+            return elements
+        default:
+            break
+        }
+        return nil
+    }
+}
+

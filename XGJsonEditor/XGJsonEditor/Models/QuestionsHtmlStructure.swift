@@ -17,6 +17,20 @@ class QuestionsStructureTitle: NSObject {
     }
 }
 
+extension QuestionsStructureTitle: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionsStructureTitle: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = EmptyTextTransformer()
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+
 class QuestionsStructureElement: NSObject {
     @objc var text: String
     
@@ -24,6 +38,20 @@ class QuestionsStructureElement: NSObject {
         self.text = text
     }
 }
+
+extension QuestionsStructureElement: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionsStructureElement: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = EmptyTextTransformer()
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+    }
+}
+
 
 class QuestionsHtmlStructure: NSObject {
     var title: QuestionsStructureTitle = QuestionsStructureTitle(text:"")
@@ -84,3 +112,28 @@ class QuestionsHtmlStructure: NSObject {
     
     
 }
+
+extension QuestionsHtmlStructure: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.stringValue = "[Оформление вопроса]"
+    }
+}
+
+extension QuestionsHtmlStructure: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 2
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            return title
+        case 1:
+            return elements
+        default:
+            break
+        }
+        return nil
+    }
+}
+

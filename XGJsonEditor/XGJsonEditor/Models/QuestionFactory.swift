@@ -15,11 +15,11 @@ class QuestionFactory: NSObject {
         case .checks :
             created = QuestionChecks.create()
         case .pairs :
-            created = QuestionPairs()
+            created = QuestionPairs.create()
         case .input :
-            created = QuestionInput()
+            created = QuestionInput.create()
         case .gaps :
-            created = QuestionGaps()
+            created = QuestionGaps.create()
         }
         
         created!.type = type

@@ -48,3 +48,21 @@ extension QuestionChecks : Creatable {
         return created as! T
     }
 }
+
+extension QuestionChecks: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension QuestionChecks: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return variants.count
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        return variants[index]
+    }
+}
+
+

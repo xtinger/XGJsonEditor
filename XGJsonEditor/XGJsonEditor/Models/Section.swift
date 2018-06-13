@@ -40,4 +40,32 @@ extension Section: Creatable {
     }
 }
 
+extension Section: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension Section: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = PrefixValueTransformer(prefix: "РАЗДЕЛ:")
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+extension Section: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        if let topics = self.topics {
+            return topics.count
+        }
+        return 0
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        if let topics = topics{
+            return topics[index]
+        }
+        return nil
+    }
+}
 

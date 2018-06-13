@@ -11,6 +11,10 @@ import SwiftSoup
 
 @objc(HTMLToAttributedString)
 class HTMLToAttributedString: ValueTransformer {
+    
+    var showEmptyMessage = false
+    static let messageIfEmpty = "(нет текста)"
+    
     override class func allowsReverseTransformation() -> Bool {
         return true
     }
@@ -21,11 +25,21 @@ class HTMLToAttributedString: ValueTransformer {
     
     override func transformedValue(_ value: Any?) -> Any? {
         guard value != nil else {
+            if showEmptyMessage {
+                return HTMLToAttributedString.messageIfEmpty
+            }
             return nil
         }
 
         let string: String = value as! String
+        
+        if string.isEmpty && showEmptyMessage {
+            return HTMLToAttributedString.messageIfEmpty
+        }
+        
         return string.html2Attributed
+        
+        
         
 //        let attrStr = try! NSAttributedString(data: string.data(using: .utf8)!, options: [:], documentAttributes: nil)
 //        return attrStr
@@ -39,6 +53,10 @@ class HTMLToAttributedString: ValueTransformer {
         }
         
         let attrStr: NSAttributedString = value as! NSAttributedString
+        
+        if attrStr.string.isEmpty {
+            print("empty")
+        }
         
         let documentAttributes = [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html]
         

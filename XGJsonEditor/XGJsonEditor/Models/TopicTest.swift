@@ -27,3 +27,9 @@ extension TopicTest: Creatable {
         return test as! T
     }
 }
+
+extension TopicTest: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.stringValue = "[Тест]"
+    }
+}

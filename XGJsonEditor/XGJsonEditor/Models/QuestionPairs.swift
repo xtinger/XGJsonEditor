@@ -73,3 +73,35 @@ extension QuestionPairs: Creatable {
         return created as! T
     }
 }
+
+extension QuestionPairs: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension QuestionPairs: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 4
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            return itemsHtmlStructure
+        case 1:
+            if let items = items {
+                return items
+            }
+        case 2:
+            return variantHtmlStructure
+        case 3:
+            if let variants = variants {
+                return variants
+            }
+        default:
+            break
+        }
+        return nil
+    }
+}

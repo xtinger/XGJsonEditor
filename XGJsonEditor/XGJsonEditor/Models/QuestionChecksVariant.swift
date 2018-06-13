@@ -35,3 +35,17 @@ extension QuestionChecksVariant : Creatable {
         return created as! T
     }
 }
+
+extension QuestionChecksVariant: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionChecksVariant: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = HTMLToAttributedString()
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+    }
+}
+

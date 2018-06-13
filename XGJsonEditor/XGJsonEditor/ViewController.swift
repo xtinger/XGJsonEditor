@@ -28,8 +28,8 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         
         title = "EGEClient editor"
-
-//        loadData()
+        
+        //        loadData()
         outlineView.delegate = self
         outlineView.dataSource = self
         resetButtons()
@@ -43,12 +43,12 @@ class ViewController: NSViewController {
             loadData(url: url)
         }
         
-//        NSDocumentController.shared.openDocument(self)
+        //        NSDocumentController.shared.openDocument(self)
     }
-
+    
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+            // Update the view, if already loaded.
         }
     }
     
@@ -74,18 +74,19 @@ class ViewController: NSViewController {
             }
         }
     }
-
+    
     func loadData(url: URL) {
         //if let filePath = Bundle.main.path(forResource: "topics", ofType: "json") {
         
-//        print("filePath OK")
+        //        print("filePath OK")
         do {
             let data = try Data(contentsOf: url, options: .mappedIfSafe)
             let decoder = JSONDecoder()
             let root = try decoder.decode(RootModel.self, from: data)
             self.rootModel = root
-//            self.treeRoot = root.sections!.first!.topics!.first!.test?.questions[1]
-            self.treeRoot = root
+//            self.treeRoot = root.sections!.first!.topics!.first!.test!
+            //            self.treeRoot = root.sections!.first!.topics!.first!.test?.questions[1]
+                        self.treeRoot = root
             print("OK")
             
             UserDefaults.standard.set(url, forKey: "recentJson")
@@ -103,17 +104,17 @@ class ViewController: NSViewController {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let jsonData = try! encoder.encode(rootModel)
-//        let string = String(data: jsonData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-//        print(string)
+        //        let string = String(data: jsonData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+        //        print(string)
         
         let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
         let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
         let fileManager = FileManager.default
         
-//        if !fileManager.fileExists(atPath: jsonFilePath.absoluteString) {
-            fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: jsonData, attributes: nil)
-//        }
+        //        if !fileManager.fileExists(atPath: jsonFilePath.absoluteString) {
+        fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: jsonData, attributes: nil)
+        //        }
         
     }
     
@@ -136,28 +137,24 @@ class ViewController: NSViewController {
     
     func setupActions(_ item: Any) {
         resetButtons()
-
+        
         if let _ = item as? Section {
             buttonAdd.isHidden = false
         }
         
         if let _ = item as? Test {
-//            buttonCheck.isHidden = false
-//            buttonGap.isHidden = false
-//            buttonInput.isHidden = false
-//            buttonPairs.isHidden = false
             addQuestionPopupButton.isHidden = false
         }
         
         if let _ = item as? Question {
-//            buttonCheck.isHidden = false
-//            buttonGap.isHidden = false
-//            buttonInput.isHidden = false
-//            buttonPairs.isHidden = false
             addQuestionPopupButton.isHidden = false
         }
         
         if let _ = item as? QuestionChecks {
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? [QuestionGapsVariant] {
             buttonAdd.isHidden = false
         }
     }
@@ -181,13 +178,18 @@ class ViewController: NSViewController {
             let newVariant = QuestionChecksVariant.create()
             checks.variants.append(newVariant)
             outlineView.reloadItem(checks, reloadChildren: true)
+        case _ as [QuestionGapsVariant]:
+            let newVariant = QuestionGapsVariant.create()
+            let questionGaps = parent as! QuestionGaps
+            questionGaps.variants!.append(newVariant)
+            outlineView.reloadItem(parent, reloadChildren: true)
         default:
             return
         }
     }
-        
-        
-
+    
+    
+    
     @IBAction func addQuestionTouched(_ sender: Any) {
         let popup: NSPopUpButton = sender as! NSPopUpButton
         let index = popup.indexOfSelectedItem
@@ -207,7 +209,7 @@ class ViewController: NSViewController {
         
         popup.selectItem(at: 0)
     }
-
+    
     func createQuestion(questionType: QuestionType) {
         let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
         guard let item = possibleItem else {return}
@@ -252,7 +254,7 @@ class ViewController: NSViewController {
         }
         
         var viewController: NSViewController?
-
+        
         if let section = item as? Section {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorSectionVC")) as! EditorSectionVC
             vc.nameTextField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: nil)
@@ -277,8 +279,8 @@ class ViewController: NSViewController {
         
         if let questionChecksVariant = item as? QuestionChecksVariant {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionChecksVariantVC")) as! EditorQuestionChecksVariantVC
-//            vc.text = questionChecksVariant.text
-//            vc.model = questionChecksVariant
+            //            vc.text = questionChecksVariant.text
+            //            vc.model = questionChecksVariant
             let valueTransformer = HTMLToAttributedString()
             
             vc.textTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
@@ -298,11 +300,11 @@ class ViewController: NSViewController {
             viewController = vc
         }
         
-        if let questionChecksVariant = item as? QuestionGapsVariant {
+        if let questionGapsVariant = item as? QuestionGapsVariant {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsVariantVC")) as! EditorQuestionGapsVariantVC
             let valueTransformer = HTMLToAttributedString()
             
-            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
             
             viewController = vc
         }
@@ -359,7 +361,7 @@ class ViewController: NSViewController {
             
             viewController = vc
         }
-
+        
         if let vc = viewController {
             editorContainerView.addSubview(vc.view)
             vc.view.addFillSuperviewConstraints()
@@ -397,36 +399,14 @@ extension ViewController: NSOutlineViewDataSource {
             return 1
         }
         
-//        if item == nil, let sections = self.rootModel.sections{
-//            return sections.count
-//        }
-        if let section = item as? Section, let topics = section.topics {
-            return topics.count
+        if let treeNodeExpandable = item as? TreeNodeExpandable {
+            return treeNodeExpandable.numberOfChildren
         }
-        if let _ = item as? Topic {
-            return 2
-        }
-        if let _ = item as? Lesson {
-            return 1
-        }
-        if let test = item as? Test {
-            return test.questions.count
-        }
-        if let questionChecks = item as? QuestionChecks {
-            return questionChecks.variants.count
-        }
-        if let _ = item as? QuestionGaps {
-            return 2
-        }
-        if let _ = item as? QuestionPairs {
-            return 4
-        }
-        if let _ = item as? QuestionsHtmlStructure {
-            return 2
-        }
-        if let _ = item as? VariantsHtmlStructure {
-            return 2
-        }
+        
+        //        if item == nil, let sections = self.rootModel.sections{
+        //            return sections.count
+        //        }
+
         if let array = item as? Array<Any> {
             return array.count
         }
@@ -445,104 +425,24 @@ extension ViewController: NSOutlineViewDataSource {
             }
             return self.treeRoot
         }
+        
+        if let treeNodeExpandable = item as? TreeNodeExpandable {
+            return treeNodeExpandable.childAtIndex(index: index) ?? DateCell()
+        }
 
-        if let section = item as? Section, let topics = section.topics{
-            return topics[index]
-        }
-        if let topic = item as? Topic {
-            switch index {
-            case 0:
-                if let lesson = topic.lesson {
-                    return lesson
-                }
-            case 1:
-                if let test = topic.test {
-                    return test
-                }
-            default:
-                break
-            }
-            
-        }
-        if let lesson = item as? Lesson {
-            switch index {
-            case 0:
-                if let lessonQuickTest = lesson.lessonQuickTest {
-                    return lessonQuickTest
-                }
-            default:
-                break
-            }
-            
-        }
-        if let questionChecks = item as? QuestionChecks {
-            return questionChecks.variants[index]
-        }
-        if let questionGaps = item as? QuestionGaps {
-            switch index {
-            case 0:
-                if let variants = questionGaps.variants {
-                    return variants
-                }
-            case 1:
-                if let items = questionGaps.items {
-                    return items
-                }
-            default:
-                break
-            }
-        }
-        if let questionPairs = item as? QuestionPairs {
-            switch index {
-            case 0:
-                return questionPairs.itemsHtmlStructure
-            case 1:
-                if let items = questionPairs.items {
-                    return items
-                }
-            case 2:
-                return questionPairs.variantHtmlStructure
-            case 3:
-                if let variants = questionPairs.variants {
-                    return variants
-                }
-            default:
-                break
-            }
-        }
-        if let questionsHtmlStructure = item as? QuestionsHtmlStructure {
-            switch index {
-            case 0:
-                return questionsHtmlStructure.title
-            case 1:
-                return questionsHtmlStructure.elements
-            default:
-                break
-            }
-        }
-        if let variantsHtmlStructure = item as? VariantsHtmlStructure {
-            switch index {
-            case 0:
-                return variantsHtmlStructure.title
-            case 1:
-                return variantsHtmlStructure.elements
-            default:
-                break
-            }
-        }
         if let array = item as? Array<Any> {
             return array[index]
-        }
-        if let test = item as? Test {
-            return test.questions[index]
         }
         return DateCell() // stub
     }
     
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-//        if let _ = item as? Question {
-//            return false
-//        }
+        //        if let _ = item as? Question {
+        //            return false
+        //        }
+        if let expandable = item as? Expandable {
+            return expandable.isExpandable
+        }
         return true
     }
 }
@@ -554,88 +454,34 @@ extension ViewController: NSOutlineViewDelegate {
         let cell = (outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DateCell"), owner: self) as? DateCell)!
         
         if let textField = cell.textField {
-            if let section = item as? Section{
-                let valueTransformer = PrefixValueTransformer(prefix: "РАЗДЕЛ:")
-                textField.bind(NSBindingName(rawValue: "value"), to: section, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
-//                textField.stringValue = name
-            }
-            else if let topic = item as? Topic{
-                let valueTransformer = PrefixValueTransformer(prefix: "ТЕМА:")
-                textField.bind(NSBindingName(rawValue: "value"), to: topic, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
-            }
-            else if let lesson = item as? Lesson{
-                let valueTransformer = PrefixValueTransformer(prefix: "ЛЕКЦИЯ:")
-                textField.bind(NSBindingName(rawValue: "value"), to: lesson, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
-            }
-            else if let _ = item as? LessonQuickTest{
-                textField.stringValue = "[Вопрос по лекции]"
-            }
-            else if let _ = item as? TopicTest{
-                textField.stringValue = "[Тест]"
-            }
-            else if let question = item as? Question, let type = question.type?.rawValue{
-//                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "type.rawValue", options: nil)
-                textField.stringValue = type
-            }
-            else if let questionChecksVariant = item as? QuestionChecksVariant {
-                let valueTransformer = HTMLToAttributedString()
-                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
-//                textField.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "text", options: nil)
-            }
-            else if let _ = item as? [QuestionGapsVariant] {
-                textField.stringValue = "[Варианты ответов]"
-            }
-            else if let _ = item as? [QuestionGapsItem] {
-                textField.stringValue = "[Ответы]"
-            }
-            else if let questionGapsVariant = item as? QuestionGapsVariant {
-                let valueTransformer = HTMLToAttributedString()
-                textField.bind(NSBindingName(rawValue: "value"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
-            }
-            else if let questionGapsItem = item as? QuestionGapsItem {
-                let valueTransformer = HTMLToAttributedString()
-                textField.bind(NSBindingName(rawValue: "value"), to: questionGapsItem, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
-            }
-            else if let _ = item as? QuestionsHtmlStructure {
-                textField.stringValue = "[Оформление вопроса]"
-//                textField.bind(NSBindingName(rawValue: "value"), to: structure, withKeyPath: "title", options: nil)
-            }
-            else if let _ = item as? VariantsHtmlStructure {
-                textField.stringValue = "[Оформление вариантов]"
-//                textField.bind(NSBindingName(rawValue: "value"), to: structure, withKeyPath: "title", options: nil)
-            }
-            else if let title = item as? QuestionsStructureTitle {
-                textField.bind(NSBindingName(rawValue: "value"), to: title, withKeyPath: "text", options: nil)
-            }
-            else if let title = item as? VariantsStructureTitle {
-                textField.bind(NSBindingName(rawValue: "value"), to: title, withKeyPath: "text", options: nil)
-            }
-            else if let question = item as? QuestionsStructureElement {
-                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "text", options: nil)
-            }
-            else if let question = item as? VariantsStructureElement {
-                textField.bind(NSBindingName(rawValue: "value"), to: question, withKeyPath: "text", options: nil)
-            }
-            else if let _ = item as? [QuestionPairsItem] {
-                textField.stringValue = "[Вопросы]"
-            }
-            else if let item = item as? QuestionPairsItem {
-                textField.bind(NSBindingName(rawValue: "value"), to: item, withKeyPath: "correctVariantNumberBindable", options: nil)
-            }
-            else if let _ = item as? [QuestionsStructureElement] {
-                textField.stringValue = "[Оформление вопроса]"
-            }
-            else if let _ = item as? [VariantsStructureElement] {
-                textField.stringValue = "[Оформление вариантов]"
-            }
-            else if let _ = item as? [QuestionPairsVariant] {
-                textField.stringValue = "[Варианты]"
-            }
-            else if let variant = item as? QuestionPairsVariant {
-                textField.bind(NSBindingName(rawValue: "value"), to: variant, withKeyPath: "text", options: nil)
+            if let textFieldPresentable = item as? TextFieldPresentable {
+                textFieldPresentable.setupTextField(textField: textField)
             }
             else {
-                textField.stringValue = String(describing: item)
+                if let _ = item as? TextFieldPresentable {
+                    
+                }
+                else if let _ = item as? [QuestionGapsVariant] {
+                    textField.stringValue = "[Варианты ответов]"
+                }
+                else if let _ = item as? [QuestionGapsItem] {
+                    textField.stringValue = "[Ответы]"
+                }
+                else if let _ = item as? [QuestionPairsItem] {
+                    textField.stringValue = "[Вопросы]"
+                }
+                else if let _ = item as? [QuestionsStructureElement] {
+                    textField.stringValue = "[Оформление вопроса]"
+                }
+                else if let _ = item as? [VariantsStructureElement] {
+                    textField.stringValue = "[Оформление вариантов]"
+                }
+                else if let _ = item as? [QuestionPairsVariant] {
+                    textField.stringValue = "[Варианты]"
+                }
+                else {
+                    textField.stringValue = String(describing: item)
+                }
             }
             return cell
         }

@@ -15,3 +15,29 @@ class QuestionGapsVariant: NSObject, Codable {
 //        super.init()
 //    }
 }
+
+extension QuestionGapsVariant: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionGapsVariant()
+        return created as! T
+    }
+}
+
+extension QuestionGapsVariant: Expandable {
+    var isExpandable: Bool {
+        return false
+    }
+}
+
+extension QuestionGapsVariant: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = HTMLToAttributedString()
+        valueTransformer.showEmptyMessage = true
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+    }
+}
+

@@ -27,3 +27,9 @@ extension LessonQuickTest: Creatable {
         return test as! T
     }
 }
+
+extension LessonQuickTest: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        textField.stringValue = "[Вопрос по лекции]"
+    }
+}

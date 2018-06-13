@@ -32,3 +32,37 @@ extension Topic: Creatable {
     }
 }
 
+extension Topic: Expandable {
+    var isExpandable: Bool {
+        return true
+    }
+}
+
+extension Topic: TextFieldPresentable {
+    func setupTextField(textField: NSTextField) {
+        let valueTransformer = PrefixValueTransformer(prefix: "ТЕМА:")
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "name", options: [.valueTransformer: valueTransformer])
+    }
+}
+
+extension Topic: TreeNodeExpandable {
+    var numberOfChildren: Int {
+        return 2
+    }
+    
+    func childAtIndex(index: Int) -> Any? {
+        switch index {
+        case 0:
+            if let lesson = lesson {
+                return lesson
+            }
+        case 1:
+            if let test = test {
+                return test
+            }
+        default:
+            break
+        }
+        return nil
+    }
+}
