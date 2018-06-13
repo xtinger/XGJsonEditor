@@ -30,6 +30,17 @@ class QuestionPairsItem: NSObject, Codable {
 //    }
 }
 
+extension QuestionPairsItem: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionPairsItem()
+        return created as! T
+    }
+}
+
 extension QuestionPairsItem: Expandable {
     var isExpandable: Bool {
         return false

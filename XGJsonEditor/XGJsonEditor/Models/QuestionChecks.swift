@@ -45,6 +45,7 @@ extension QuestionChecks : Creatable {
     class func create<T>(type: T.Type) -> T {
         let created = QuestionChecks()
         created.type = .checks
+        created.variants = [QuestionChecksVariant()]
         return created as! T
     }
 }

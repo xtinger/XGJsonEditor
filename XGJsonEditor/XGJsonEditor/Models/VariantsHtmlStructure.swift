@@ -90,6 +90,10 @@ class VariantsHtmlStructure: NSObject {
         }
     }
     
+    override init() {
+        super.init()
+    }
+    
     required init(html: String) {
         do {
             let doc: Document = try SwiftSoup.parseBodyFragment(html)

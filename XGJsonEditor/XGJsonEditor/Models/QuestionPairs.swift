@@ -68,8 +68,21 @@ extension QuestionPairs: Creatable {
     }
     
     class func create<T>(type: T.Type) -> T {
+        
         let created = QuestionPairs()
+        
         created.type = .pairs
+        created.items = [QuestionPairsItem()]
+        created.variants = [QuestionPairsVariant()]
+        
+        let questionsHtmlStructure = QuestionsHtmlStructure()
+        questionsHtmlStructure.elements = [QuestionsStructureElement(text: "")]
+        created.itemsHtmlStructure = questionsHtmlStructure
+        
+        let variantsHtmlStructure = VariantsHtmlStructure()
+        variantsHtmlStructure.elements = [VariantsStructureElement(text: "")]
+        created.variantHtmlStructure = variantsHtmlStructure
+        
         return created as! T
     }
 }

@@ -19,6 +19,17 @@ class QuestionPairsVariant: NSObject, Codable {
 //    }
 }
 
+extension QuestionPairsVariant: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionPairsVariant()
+        return created as! T
+    }
+}
+
 extension QuestionPairsVariant: Expandable {
     var isExpandable: Bool {
         return false
@@ -27,7 +38,9 @@ extension QuestionPairsVariant: Expandable {
 
 extension QuestionPairsVariant: TextFieldPresentable {
     func setupTextField(textField: NSTextField) {
-        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: nil)
+        let valueTransformer = HTMLToAttributedString()
+        valueTransformer.showEmptyMessage = true
+        textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
     }
 }
 

@@ -45,6 +45,7 @@ extension QuestionChecksVariant: Expandable {
 extension QuestionChecksVariant: TextFieldPresentable {
     func setupTextField(textField: NSTextField) {
         let valueTransformer = HTMLToAttributedString()
+        valueTransformer.showEmptyMessage = true
         textField.bind(NSBindingName(rawValue: "value"), to: self, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
     }
 }

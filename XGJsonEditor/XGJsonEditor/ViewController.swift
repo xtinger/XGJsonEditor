@@ -20,7 +20,7 @@ class ViewController: NSViewController {
     var rootModel : RootModel!
     var treeRoot : NSObject!
     var documents: NSDocumentController = NSDocumentController()
-    var questionTypes: [String] = [" + ", "checks", "gaps", "pairs", "input"]
+    var questionTypes: [String] = [" + вопрос ", "checks", "gaps", "pairs", "input"]
     
     var selectedQuestionType: Any?
     
@@ -139,6 +139,12 @@ class ViewController: NSViewController {
         resetButtons()
         
         if let _ = item as? Section {
+            buttonAdd.title = "+ раздел"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? Topic {
+            buttonAdd.title = "+ тема"
             buttonAdd.isHidden = false
         }
         
@@ -151,10 +157,57 @@ class ViewController: NSViewController {
         }
         
         if let _ = item as? QuestionChecks {
+            buttonAdd.title = "+ вопрос"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionGapsVariant {
+            buttonAdd.title = "+ вариант"
             buttonAdd.isHidden = false
         }
         
         if let _ = item as? [QuestionGapsVariant] {
+            buttonAdd.title = "+ вариант"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionGapsItem {
+            buttonAdd.title = "+ ответ"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? [QuestionGapsItem] {
+            buttonAdd.title = "+ ответ"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionPairsItem {
+            buttonAdd.title = "+ вопрос"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? [QuestionPairsItem] {
+            buttonAdd.title = "+ вопрос"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionPairsVariant {
+            buttonAdd.title = "+ вариант"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? [QuestionPairsVariant] {
+            buttonAdd.title = "+ вариант"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? [QuestionsStructureElement] {
+            buttonAdd.title = "+ оф. вопр."
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionsStructureElement {
+            buttonAdd.title = "+ оф. вопр."
             buttonAdd.isHidden = false
         }
     }
@@ -165,7 +218,9 @@ class ViewController: NSViewController {
         let parent = outlineView.parent(forItem: item)
         
         switch item {
+            
         case let section as Section:
+            
             let index = rootModel.sections?.index(of: section)
             let newSection = Section.create()
             let nextIndex = index!.advanced(by: 1)
@@ -174,15 +229,122 @@ class ViewController: NSViewController {
             
             let indexSet = IndexSet.init(integer: nextIndex)
             outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
+            
+        case let topic as Topic:
+            
+            let parentSection = parent as! Section
+            let index = parentSection.topics!.index(of: topic)
+            let newTopic = Topic.create()
+            let nextIndex = index!.advanced(by: 1)
+            parentSection.topics!.insert(newTopic, at: nextIndex)
+            outlineView.reloadItem(parent, reloadChildren: true)
+            
+            let indexSet = IndexSet.init(integer: nextIndex)
+            outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
+            
         case let checks as QuestionChecks:
+            
             let newVariant = QuestionChecksVariant.create()
             checks.variants.append(newVariant)
             outlineView.reloadItem(checks, reloadChildren: true)
-        case _ as [QuestionGapsVariant]:
+            
+        case let gapsVariant as QuestionGapsVariant:
+            
+            let parentGaps = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionGaps
+            let index = parentGaps.variants!.index(of: gapsVariant)
             let newVariant = QuestionGapsVariant.create()
-            let questionGaps = parent as! QuestionGaps
-            questionGaps.variants!.append(newVariant)
-            outlineView.reloadItem(parent, reloadChildren: true)
+            let nextIndex = index!.advanced(by: 1)
+            parentGaps.variants!.insert(newVariant, at: nextIndex)
+            outlineView.reloadItem(parentGaps, reloadChildren: true)
+            outlineView.expandItem(parentGaps.variants, expandChildren: true)
+   
+        case _ as [QuestionGapsVariant]:
+            
+            let parentGaps = outlineView.parent(forItem: item) as! QuestionGaps
+            let newVariant = QuestionGapsVariant.create()
+            parentGaps.variants!.append(newVariant)
+            
+            outlineView.reloadItem(parentGaps, reloadChildren: true)
+            outlineView.expandItem(parentGaps.variants, expandChildren: true)
+            
+        case let gapsItem as QuestionGapsItem:
+            
+            let parentGaps = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionGaps
+            let index = parentGaps.items!.index(of: gapsItem)
+            let newItem = QuestionGapsItem.create()
+            let nextIndex = index!.advanced(by: 1)
+            parentGaps.items!.insert(newItem, at: nextIndex)
+            outlineView.reloadItem(parentGaps, reloadChildren: true)
+            outlineView.expandItem(parentGaps.items, expandChildren: true)
+            
+        case _ as [QuestionGapsItem]:
+            
+            let parentGaps = outlineView.parent(forItem: item) as! QuestionGaps
+            let newItem = QuestionGapsItem.create()
+            parentGaps.items!.append(newItem)
+            
+            outlineView.reloadItem(parentGaps, reloadChildren: true)
+            outlineView.expandItem(parentGaps.items, expandChildren: true)
+            
+        case let pairsItem as QuestionPairsItem:
+            
+            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
+            let index = parentPairs.items!.index(of: pairsItem)
+            let newItem = QuestionPairsItem.create()
+            let nextIndex = index!.advanced(by: 1)
+            parentPairs.items!.insert(newItem, at: nextIndex)
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.items, expandChildren: true)
+            
+        case _ as [QuestionPairsItem]:
+            
+            let parentPairs = outlineView.parent(forItem: item) as! QuestionPairs
+            let newItem = QuestionPairsItem.create()
+            parentPairs.items!.append(newItem)
+            
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.items, expandChildren: true)
+            
+        case let pairsVariant as QuestionPairsVariant:
+            
+            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
+            let index = parentPairs.variants!.index(of: pairsVariant)
+            let newVariant = QuestionPairsVariant.create()
+            let nextIndex = index!.advanced(by: 1)
+            parentPairs.variants!.insert(newVariant, at: nextIndex)
+            
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.variants, expandChildren: true)
+            
+        case _ as [QuestionPairsVariant]:
+            
+            let parentPairs = outlineView.parent(forItem: item) as! QuestionPairs
+            let newVariant = QuestionPairsVariant.create()
+            parentPairs.variants!.append(newVariant)
+            
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.variants, expandChildren: true)
+            
+        case let itemsElement as QuestionsStructureElement:
+            
+            let parentPairs = outlineView.parent(forItem:outlineView.parent(forItem: outlineView.parent(forItem: item))) as! QuestionPairs
+            let index = parentPairs.itemsHtmlStructure.elements.index(of: itemsElement)
+            let newElement = QuestionsStructureElement(text: "")
+            let nextIndex = index!.advanced(by: 1)
+            parentPairs.itemsHtmlStructure.elements.insert(newElement, at: nextIndex)
+            
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.itemsHtmlStructure.elements, expandChildren: true)
+            
+        case _ as [QuestionsStructureElement]:
+            
+            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
+            let newElement = QuestionsStructureElement(text: "")
+            parentPairs.itemsHtmlStructure.elements.append(newElement)
+            
+            outlineView.reloadItem(parentPairs, reloadChildren: true)
+            outlineView.expandItem(parentPairs.itemsHtmlStructure.elements, expandChildren: true)
+            
         default:
             return
         }
