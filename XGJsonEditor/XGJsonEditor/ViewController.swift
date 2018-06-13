@@ -156,6 +156,10 @@ class ViewController: NSViewController {
 //            buttonPairs.isHidden = false
             addQuestionPopupButton.isHidden = false
         }
+        
+        if let _ = item as? QuestionChecks {
+            buttonAdd.isHidden = false
+        }
     }
     
     @IBAction func buttonAddClicked(_ sender: Any) {
@@ -173,6 +177,10 @@ class ViewController: NSViewController {
             
             let indexSet = IndexSet.init(integer: nextIndex)
             outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
+        case let checks as QuestionChecks:
+            let newVariant = QuestionChecksVariant.create()
+            checks.variants.append(newVariant)
+            outlineView.reloadItem(checks, reloadChildren: true)
         default:
             return
         }
@@ -274,6 +282,7 @@ class ViewController: NSViewController {
             let valueTransformer = HTMLToAttributedString()
             
             vc.textTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+            vc.isCorrectCheckBox.bind(NSBindingName(rawValue: "value"), to: questionChecksVariant, withKeyPath: "isCorrect", options: nil)
             vc.correctCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "correctComment", options: [.valueTransformer: valueTransformer])
             vc.incorrectCommentTextView.bind(NSBindingName(rawValue: "attributedString"), to: questionChecksVariant, withKeyPath: "incorrectComment", options: [.valueTransformer: valueTransformer])
             

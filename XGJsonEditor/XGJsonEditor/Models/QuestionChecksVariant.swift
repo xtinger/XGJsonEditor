@@ -22,3 +22,16 @@ class QuestionChecksVariant: NSObject, Codable {
     
     
 }
+
+extension QuestionChecksVariant : Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionChecksVariant()
+        created.isCorrect = false
+        
+        return created as! T
+    }
+}

@@ -1242,6 +1242,7 @@
                     <connections>
                         <outlet property="correctCommentTextView" destination="Gta-GX-8rm" id="HGT-vK-hY9"/>
                         <outlet property="incorrectCommentTextView" destination="zLs-3k-1Zl" id="Rfr-m3-pvv"/>
+                        <outlet property="isCorrectCheckBox" destination="XT8-Qn-ijq" id="bUn-Sp-7ul"/>
                         <outlet property="textTextView" destination="BIt-76-nqO" id="QgW-il-b4X"/>
                     </connections>
                 </viewController>

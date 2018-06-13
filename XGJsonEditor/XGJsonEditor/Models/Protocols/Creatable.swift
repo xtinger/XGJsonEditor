@@ -10,7 +10,7 @@ public protocol Creatable: class {
     static func create() -> Self
 }
 
-public protocol CreatableByType: class {
-    static func create<T>(type: T.Type) -> T
-}
+//public protocol CreatableByType: class {
+//    static func create<T>(type: T.Type) -> T
+//}
 

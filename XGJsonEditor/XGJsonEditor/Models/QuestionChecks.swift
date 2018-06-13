@@ -37,7 +37,7 @@ class QuestionChecks: Question {
     }
 }
 
-extension QuestionChecks : CreatableByType {
+extension QuestionChecks : Creatable {
     class func create() -> Self {
         return create(type: self)
     }

@@ -23,5 +23,6 @@ class EditorQuestionChecksVariantVC: EditorBaseVC {
     @IBOutlet var textTextView: NSTextView!
     @IBOutlet var correctCommentTextView: NSTextView!
     @IBOutlet var incorrectCommentTextView: NSTextView!
+    @IBOutlet weak var isCorrectCheckBox: NSButton!
     
 }
