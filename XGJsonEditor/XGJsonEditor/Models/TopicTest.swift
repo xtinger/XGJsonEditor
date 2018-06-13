@@ -15,3 +15,15 @@ class TopicTest: Test {
 //        super.init()
 //    }
 }
+
+extension TopicTest: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let test = TopicTest()
+        
+        return test as! T
+    }
+}

@@ -20,6 +20,10 @@ class QuestionGaps: Question {
         case text, variants, items
     }
     
+    override init() {
+        super.init()
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.text = try container.decode(String.self, forKey: .text)
@@ -28,4 +32,16 @@ class QuestionGaps: Question {
         try super.init(from: decoder)
     }
 
+}
+
+extension QuestionGaps: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionGaps()
+        created.type = .gaps
+        return created as! T
+    }
 }

@@ -23,6 +23,10 @@ class QuestionChecks: Question {
         self.variants = try container.decode([QuestionChecksVariant].self, forKey: .variants)
         try super.init(from: decoder)
     }
+    
+    override init() {
+        super.init()
+    }
 
     override func encode(to encoder: Encoder) throws {
         try super.encode(to: encoder)
@@ -30,5 +34,17 @@ class QuestionChecks: Question {
         try container.encode(text, forKey:.text)
         var variantsContainer = container.nestedUnkeyedContainer(forKey: .variants)
         try variantsContainer.encode(contentsOf: variants)
+    }
+}
+
+extension QuestionChecks : CreatableByType {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionChecks()
+        created.type = .checks
+        return created as! T
     }
 }

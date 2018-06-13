@@ -27,6 +27,10 @@ class QuestionPairs: Question {
         case text, itemsHtml, items, variantsHtml, variants
     }
     
+    override init() {
+        super.init()
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.text = try container.decode(String.self, forKey: .text)
@@ -55,5 +59,17 @@ class QuestionPairs: Question {
         
         let variantsHtmlString = variantHtmlStructure.htmlOutput
         try container.encode(variantsHtmlString, forKey: .variantsHtml)
+    }
+}
+
+extension QuestionPairs: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionPairs()
+        created.type = .pairs
+        return created as! T
     }
 }

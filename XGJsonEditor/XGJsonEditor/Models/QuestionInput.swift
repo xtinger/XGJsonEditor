@@ -31,4 +31,20 @@ class QuestionInput: Question {
         
         try super.init(from: decoder)
     }
+    
+    override init() {
+        super.init()
+    }
+}
+
+extension QuestionInput: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let created = QuestionInput()
+        created.type = .input
+        return created as! T
+    }
 }

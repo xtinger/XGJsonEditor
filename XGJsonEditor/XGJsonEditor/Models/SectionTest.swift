@@ -15,3 +15,15 @@ class SectionTest: Test {
 //        super.init()
 //    }
 }
+
+extension SectionTest: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let test = SectionTest()
+        return test as! T
+    }
+}
+

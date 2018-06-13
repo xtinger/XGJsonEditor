@@ -14,14 +14,15 @@ class ViewController: NSViewController {
     @IBOutlet weak var editorContainerView: NSView!
     
     @IBOutlet weak var buttonAdd: NSButton!
-    @IBOutlet weak var buttonCheck: NSButton!
-    @IBOutlet weak var buttonGap: NSButton!
-    @IBOutlet weak var buttonInput: NSButton!
-    @IBOutlet weak var buttonPairs: NSButton!
+    @IBOutlet weak var addQuestionPopupButton: NSPopUpButton!
+    
     
     var rootModel : RootModel!
     var treeRoot : NSObject!
     var documents: NSDocumentController = NSDocumentController()
+    var questionTypes: [String] = [" + ", "checks", "gaps", "pairs", "input"]
+    
+    var selectedQuestionType: Any?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,12 @@ class ViewController: NSViewController {
 //        loadData()
         outlineView.delegate = self
         outlineView.dataSource = self
-        
         resetButtons()
+        
+        addQuestionPopupButton.removeAllItems()
+        addQuestionPopupButton.addItems(withTitles: questionTypes)
+        
+        
         
         if let url = UserDefaults.standard.url(forKey: "recentJson") {
             loadData(url: url)
@@ -126,10 +131,7 @@ class ViewController: NSViewController {
     
     func resetButtons() {
         buttonAdd.isHidden = true
-        buttonCheck.isHidden = true
-        buttonGap.isHidden = true
-        buttonInput.isHidden = true
-        buttonPairs.isHidden = true
+        addQuestionPopupButton.isHidden = true
     }
     
     func setupActions(_ item: Any) {
@@ -140,26 +142,97 @@ class ViewController: NSViewController {
         }
         
         if let _ = item as? Test {
-            buttonCheck.isHidden = false
-            buttonGap.isHidden = false
-            buttonInput.isHidden = false
-            buttonPairs.isHidden = false
+//            buttonCheck.isHidden = false
+//            buttonGap.isHidden = false
+//            buttonInput.isHidden = false
+//            buttonPairs.isHidden = false
+            addQuestionPopupButton.isHidden = false
+        }
+        
+        if let _ = item as? Question {
+//            buttonCheck.isHidden = false
+//            buttonGap.isHidden = false
+//            buttonInput.isHidden = false
+//            buttonPairs.isHidden = false
+            addQuestionPopupButton.isHidden = false
         }
     }
     
     @IBAction func buttonAddClicked(_ sender: Any) {
-        let item = outlineView.item(atRow: outlineView.selectedRow)
-        
+        let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
+        guard let item = possibleItem else {return}
         let parent = outlineView.parent(forItem: item)
         
-        if let section = item as? Section {
+        switch item {
+        case let section as Section:
             let index = rootModel.sections?.index(of: section)
-            let newSection = Section.buildSection()
-            rootModel.sections?.insert(newSection, at: index!.advanced(by: 1))
+            let newSection = Section.create()
+            let nextIndex = index!.advanced(by: 1)
+            rootModel.sections?.insert(newSection, at: nextIndex)
             outlineView.reloadItem(parent)
+            
+            let indexSet = IndexSet.init(integer: nextIndex)
+            outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
+        default:
+            return
         }
+    }
+        
         
 
+    @IBAction func addQuestionTouched(_ sender: Any) {
+        let popup: NSPopUpButton = sender as! NSPopUpButton
+        let index = popup.indexOfSelectedItem
+        
+        switch index {
+        case 1:
+            createQuestion(questionType: .checks)
+        case 2:
+            createQuestion(questionType: .gaps)
+        case 3:
+            createQuestion(questionType: .pairs)
+        case 4:
+            createQuestion(questionType: .input)
+        default:
+            return
+        }
+        
+        popup.selectItem(at: 0)
+    }
+
+    func createQuestion(questionType: QuestionType) {
+        let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
+        guard let item = possibleItem else {return}
+        let parent = outlineView.parent(forItem: item)
+        
+        var parentTest: Test?
+        var questions: Array<Question>?
+        var index: Int?
+        
+        if let test = item as? Test {
+            parentTest = test
+            questions = test.questions
+        }
+        
+        if let question = item as? Question, let test = parent as? Test {
+            parentTest = test
+            questions = test.questions
+            let questions = test.questions
+            index = questions.index(of: question)
+        }
+        
+        if var questions = questions, let test = parentTest {
+            let newQuestion = QuestionFactory.create(type: questionType)
+            if let index = index {
+                questions.insert(newQuestion, at: index.advanced(by: 1))
+            }
+            else {
+                questions.append(newQuestion)
+            }
+            test.questions = questions
+            
+            outlineView.reloadItem(test, reloadChildren: true)
+        }
     }
     
     func selectEditor(_ item: Any) {

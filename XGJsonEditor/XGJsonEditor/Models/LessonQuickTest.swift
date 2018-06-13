@@ -15,3 +15,15 @@ class LessonQuickTest: Test {
 //        try super.init(from: decoder)
 //    }
 }
+
+extension LessonQuickTest: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let test = LessonQuickTest()
+        
+        return test as! T
+    }
+}

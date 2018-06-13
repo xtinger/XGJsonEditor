@@ -15,17 +15,21 @@ class Lesson: NSObject, Codable {
     @objc var name: String?
     @objc var path: String?
     var lessonQuickTest: LessonQuickTest?
+}
+
+extension Lesson: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
     
-//    required init(from decoder: Decoder) throws {
-//        super.init()
-//    }
-    
-    static func buildLesson() -> Lesson {
+    class func create<T>(type: T.Type) -> T {
         let lesson = Lesson()
         lesson.id = IDGenerator.generate()
         lesson.name = ""
         lesson.path = ""
-        lesson.lessonQuickTest = LessonQuickTest()
-        return lesson
+        lesson.lessonQuickTest = LessonQuickTest.create()
+        lesson.lessonQuickTest?.parent = lesson
+        return lesson as! T
     }
 }
+

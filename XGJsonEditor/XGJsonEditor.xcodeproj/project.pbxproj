@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		921603B420D1202C007DA3E7 /* Creatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921603B320D1202C007DA3E7 /* Creatable.swift */; };
+		921603B720D13AED007DA3E7 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921603B620D13AED007DA3E7 /* QuestionFactory.swift */; };
 		92790EC220C95B8A00DC6962 /* QuestionsHtmlStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC120C95B8A00DC6962 /* QuestionsHtmlStructure.swift */; };
 		92790EC420C97B7000DC6962 /* SingleTextFieldEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC320C97B7000DC6962 /* SingleTextFieldEditor.swift */; };
 		92790EC620C97D9C00DC6962 /* SingleTextViewEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC520C97D9C00DC6962 /* SingleTextViewEditor.swift */; };
@@ -52,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		8EA6FD54841333294CF05CDD /* Pods-XGJsonEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XGJsonEditor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XGJsonEditor/Pods-XGJsonEditor.debug.xcconfig"; sourceTree = "<group>"; };
+		921603B320D1202C007DA3E7 /* Creatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Creatable.swift; sourceTree = "<group>"; };
+		921603B620D13AED007DA3E7 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		92790EC120C95B8A00DC6962 /* QuestionsHtmlStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsHtmlStructure.swift; sourceTree = "<group>"; };
 		92790EC320C97B7000DC6962 /* SingleTextFieldEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextFieldEditor.swift; sourceTree = "<group>"; };
 		92790EC520C97D9C00DC6962 /* SingleTextViewEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextViewEditor.swift; sourceTree = "<group>"; };
@@ -128,6 +132,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		921603B520D12072007DA3E7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				921603B320D1202C007DA3E7 /* Creatable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		92D44DA020CADE3800AE1050 /* Transformers */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +189,7 @@
 		92D94B2F20AC47B4009C66EC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				921603B520D12072007DA3E7 /* Protocols */,
 				92D94B4E20AC5312009C66EC /* RootModel.swift */,
 				92D94B2D20AC456E009C66EC /* Section.swift */,
 				92D94B3020AC47CC009C66EC /* Topic.swift */,
@@ -186,6 +199,7 @@
 				92D94B4C20AC516F009C66EC /* TopicTest.swift */,
 				92D94B3620AC4907009C66EC /* LessonQuickTest.swift */,
 				92D94B3820AC4997009C66EC /* Question.swift */,
+				921603B620D13AED007DA3E7 /* QuestionFactory.swift */,
 				92D94B3A20AC49D9009C66EC /* QuestionChecks.swift */,
 				92D94B3C20AC4AF4009C66EC /* QuestionChecksVariant.swift */,
 				92D94B3E20AC4B9B009C66EC /* QuestionGaps.swift */,
@@ -349,6 +363,7 @@
 				92D44D9F20CADE2B00AE1050 /* PrefixValueTransformer.swift in Sources */,
 				92D94B4320AC4DEC009C66EC /* QuestionGapsItem.swift in Sources */,
 				92790EC420C97B7000DC6962 /* SingleTextFieldEditor.swift in Sources */,
+				921603B720D13AED007DA3E7 /* QuestionFactory.swift in Sources */,
 				92D94B3920AC4997009C66EC /* Question.swift in Sources */,
 				92D44DA220CAE22000AE1050 /* EditorQuestionInput.swift in Sources */,
 				92790EC220C95B8A00DC6962 /* QuestionsHtmlStructure.swift in Sources */,
@@ -360,6 +375,7 @@
 				92F71D8420C03427003F6CD8 /* EditorQuestionGapsItemVC.swift in Sources */,
 				92E6D4D220BEFF5600167BC2 /* EditorBaseVC.swift in Sources */,
 				92D94B4D20AC516F009C66EC /* TopicTest.swift in Sources */,
+				921603B420D1202C007DA3E7 /* Creatable.swift in Sources */,
 				92D94B4720AC4EC0009C66EC /* QuestionPairsItem.swift in Sources */,
 				92E6D4CD20BEF3EA00167BC2 /* EditorTopicVC.swift in Sources */,
 				92D94B4520AC4E4C009C66EC /* QuestionPairs.swift in Sources */,

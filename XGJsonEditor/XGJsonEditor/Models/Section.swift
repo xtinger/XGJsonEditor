@@ -20,15 +20,24 @@ class Section: NSObject, Codable {
             sectionTest?.parent = self
         }
     }
+}
+
+extension Section: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
     
-    static func buildSection() -> Section {
+    class func create<T>(type: T.Type) -> T {
         let section = Section()
         section.id = IDGenerator.generate()
         section.name = ""
         section.path = ""
-        section.topics = [Topic.buildTopic()]
+        section.topics = [Topic.create()]
         section.isFree = false
         section.sectionTest = SectionTest()
-        return section
+        section.sectionTest?.parent = section
+        return section as! T
     }
 }
+
+

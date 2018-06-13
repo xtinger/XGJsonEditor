@@ -730,46 +730,29 @@
                                                             <action selector="buttonAddClicked:" target="XfG-lQ-9wD" id="ZQA-p0-eAH"/>
                                                         </connections>
                                                     </button>
-                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oPx-Qq-cjU">
-                                                        <rect key="frame" x="-6" y="2" width="77" height="32"/>
-                                                        <buttonCell key="cell" type="push" title="check" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3iK-PA-wuM">
+                                                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zx2-8g-Gbx">
+                                                        <rect key="frame" x="-2" y="2" width="202" height="26"/>
+                                                        <popUpButtonCell key="cell" type="push" title="Add question" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="d6E-pa-dyL" id="1ot-SO-hZR">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                    </button>
-                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Y6-fS-odc">
-                                                        <rect key="frame" x="-6" y="2" width="63" height="32"/>
-                                                        <buttonCell key="cell" type="push" title="gap" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fpo-Lz-KfE">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                    </button>
-                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8H0-yd-TIP">
-                                                        <rect key="frame" x="-6" y="2" width="71" height="32"/>
-                                                        <buttonCell key="cell" type="push" title="input" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pll-tW-0AY">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                    </button>
-                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R0D-6m-NNF">
-                                                        <rect key="frame" x="-6" y="2" width="70" height="32"/>
-                                                        <buttonCell key="cell" type="push" title="pairs" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Tgt-3b-87M">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
-                                                        </buttonCell>
-                                                    </button>
+                                                            <font key="font" metaFont="menu"/>
+                                                            <menu key="menu" id="xur-WO-iZL">
+                                                                <items>
+                                                                    <menuItem title="Add question" state="on" id="d6E-pa-dyL"/>
+                                                                    <menuItem title="Item 2" id="6YS-HR-Bz7"/>
+                                                                    <menuItem title="Item 3" id="jdJ-UL-DF9"/>
+                                                                </items>
+                                                            </menu>
+                                                        </popUpButtonCell>
+                                                        <connections>
+                                                            <action selector="addQuestionTouched:" target="XfG-lQ-9wD" id="QAV-jq-vSX"/>
+                                                        </connections>
+                                                    </popUpButton>
                                                 </subviews>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
-                                                    <integer value="1000"/>
-                                                    <integer value="1000"/>
-                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
-                                                    <real value="3.4028234663852886e+38"/>
-                                                    <real value="3.4028234663852886e+38"/>
-                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -831,7 +814,7 @@
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
                                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="g6t-Nn-Qg8">
-                                                    <rect key="frame" x="1" y="253" width="235" height="16"/>
+                                                    <rect key="frame" x="1" y="224" width="143" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="STi-ZZ-ocT">
@@ -882,11 +865,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addQuestionPopupButton" destination="zx2-8g-Gbx" id="yAh-PZ-Fkg"/>
                         <outlet property="buttonAdd" destination="xrQ-Iu-1Pl" id="gjA-1a-cfJ"/>
-                        <outlet property="buttonCheck" destination="oPx-Qq-cjU" id="iNL-Ti-XCk"/>
-                        <outlet property="buttonGap" destination="7Y6-fS-odc" id="K4W-c7-N28"/>
-                        <outlet property="buttonInput" destination="8H0-yd-TIP" id="F0N-G5-kiu"/>
-                        <outlet property="buttonPairs" destination="R0D-6m-NNF" id="qoS-Fw-Pbz"/>
                         <outlet property="editorContainerView" destination="oqf-Gy-ga2" id="YDa-KA-L3n"/>
                         <outlet property="outlineView" destination="84z-W7-TQT" id="xKf-Lb-ZGO"/>
                     </connections>
@@ -907,6 +887,7 @@
                         <toolbarItem reference="biC-O0-yWG"/>
                     </defaultToolbarItems>
                 </toolbar>
+                <userDefaultsController id="X2n-nQ-Xgg"/>
             </objects>
             <point key="canvasLocation" x="75" y="655"/>
         </scene>

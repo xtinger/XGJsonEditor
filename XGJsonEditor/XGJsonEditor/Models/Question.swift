@@ -15,7 +15,7 @@ enum QuestionType: String, Codable {
     case input = "input"
 }
 
-class Question: NSObject, Codable {    
+class Question: NSObject, Codable {
     var id: Int?
     var type: QuestionType?
 }
