@@ -39,6 +39,17 @@ class VariantsStructureElement: NSObject {
     }
 }
 
+extension VariantsStructureElement: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let element = VariantsStructureElement(text: "")
+        return element as! T
+    }
+}
+
 extension VariantsStructureElement: Expandable {
     var isExpandable: Bool {
         return false
@@ -56,7 +67,7 @@ extension VariantsStructureElement: TextFieldPresentable {
 class VariantsHtmlStructure: NSObject {
     var title: VariantsStructureTitle = VariantsStructureTitle(text:"")
     
-    var elements: [VariantsStructureElement] = []
+    @objc var elements: [VariantsStructureElement] = []
     
     var htmlOutput: String {
         get {

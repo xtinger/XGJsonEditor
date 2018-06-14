@@ -14,14 +14,14 @@ class QuestionPairs: Question {
     // html содержимое списка
     @objc var itemsHtml: String?
     // список описаний вопросов
-    var items: [QuestionPairsItem]?
+    @objc var items: [QuestionPairsItem]?
     // html содержимое списка с вариантами ответов
-    var variantsHtml: String?
+    @objc var variantsHtml: String?
     // список описаний вариантов ответа
-    var variants: [QuestionPairsVariant]?
+    @objc var variants: [QuestionPairsVariant]?
     
-    var itemsHtmlStructure = QuestionsHtmlStructure(html: "")
-    var variantHtmlStructure = VariantsHtmlStructure(html: "")
+    @objc var itemsHtmlStructure = QuestionsHtmlStructure(html: "")
+    @objc var variantHtmlStructure = VariantsHtmlStructure(html: "")
     
     private enum CodingKeys: String, CodingKey {
         case text, itemsHtml, items, variantsHtml, variants
@@ -61,6 +61,18 @@ class QuestionPairs: Question {
         try container.encode(variantsHtmlString, forKey: .variantsHtml)
     }
 }
+
+extension QuestionPairs {
+    override var description:String{
+        return "QuestionPairs: itemsHtmlStructure: \(itemsHtmlStructure.elements.count) \(itemsHtmlStructure.elements)"
+    }
+}
+
+//extension QuestionPairs: CustomStringConvertible {
+//    public override var debugDescription: String {
+//        return "\(self) itemsHtmlStructure: \(itemsHtmlStructure.elements)"
+//    }
+//}
 
 extension QuestionPairs: Creatable {
     class func create() -> Self {

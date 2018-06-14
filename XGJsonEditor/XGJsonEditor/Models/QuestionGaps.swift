@@ -12,9 +12,9 @@ class QuestionGaps: Question {
     // html
     @objc var text: String?
     // список названий на кнопках с вариантами
-    var variants: [QuestionGapsVariant]?
+    @objc var variants: [QuestionGapsVariant]?
     // список пропусков с указанием правильного варианта
-    var items : [QuestionGapsItem]?
+    @objc var items : [QuestionGapsItem]?
     
     private enum CodingKeys: String, CodingKey {
         case text, variants, items

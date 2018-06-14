@@ -9,7 +9,5 @@
 import Cocoa
 
 class RootModel: NSObject, Codable {
-    var sections: [Section]?
-    
-
+    @objc var sections: [Section]?
 }

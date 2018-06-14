@@ -11,7 +11,7 @@ import Cocoa
 class QuestionChecks: Question {
     // Текст, который показывается перед вариантами с чекбоксами
     @objc var text: String?
-    var variants: [QuestionChecksVariant] = []
+    @objc var variants: [QuestionChecksVariant] = []
     
     enum CodingKeys: String, CodingKey {
         case text, variants

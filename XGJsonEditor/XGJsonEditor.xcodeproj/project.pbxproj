@@ -13,6 +13,7 @@
 		921603BD20D16330007DA3E7 /* EmptyTextTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921603BC20D16330007DA3E7 /* EmptyTextTransformer.swift */; };
 		921603BF20D168A4007DA3E7 /* TextFieldPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921603BE20D168A4007DA3E7 /* TextFieldPresentable.swift */; };
 		921603C120D16D68007DA3E7 /* TreeNodeExpandable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921603C020D16D68007DA3E7 /* TreeNodeExpandable.swift */; };
+		926521E820D2743D00859068 /* NSOutlineView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926521E720D2743D00859068 /* NSOutlineView+Utils.swift */; };
 		92790EC220C95B8A00DC6962 /* QuestionsHtmlStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC120C95B8A00DC6962 /* QuestionsHtmlStructure.swift */; };
 		92790EC420C97B7000DC6962 /* SingleTextFieldEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC320C97B7000DC6962 /* SingleTextFieldEditor.swift */; };
 		92790EC620C97D9C00DC6962 /* SingleTextViewEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92790EC520C97D9C00DC6962 /* SingleTextViewEditor.swift */; };
@@ -64,6 +65,7 @@
 		921603BC20D16330007DA3E7 /* EmptyTextTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTextTransformer.swift; sourceTree = "<group>"; };
 		921603BE20D168A4007DA3E7 /* TextFieldPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPresentable.swift; sourceTree = "<group>"; };
 		921603C020D16D68007DA3E7 /* TreeNodeExpandable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNodeExpandable.swift; sourceTree = "<group>"; };
+		926521E720D2743D00859068 /* NSOutlineView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+Utils.swift"; sourceTree = "<group>"; };
 		92790EC120C95B8A00DC6962 /* QuestionsHtmlStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsHtmlStructure.swift; sourceTree = "<group>"; };
 		92790EC320C97B7000DC6962 /* SingleTextFieldEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextFieldEditor.swift; sourceTree = "<group>"; };
 		92790EC520C97D9C00DC6962 /* SingleTextViewEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextViewEditor.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				92D94B2B20AC44DE009C66EC /* DateCell.swift */,
 				92D94B2120AC4050009C66EC /* Main.storyboard */,
 				92D94B1D20AC404E009C66EC /* ViewController.swift */,
+				926521E720D2743D00859068 /* NSOutlineView+Utils.swift */,
 				92D44DA020CADE3800AE1050 /* Transformers */,
 				92E6D4CB20BEE50100167BC2 /* Editors */,
 				92D94B2F20AC47B4009C66EC /* Models */,
@@ -397,6 +400,7 @@
 				921603BD20D16330007DA3E7 /* EmptyTextTransformer.swift in Sources */,
 				92D94B4920AC4F14009C66EC /* QuestionPairsVariant.swift in Sources */,
 				92E6D4D020BEFEF000167BC2 /* EditorQuestionChecksVariantVC.swift in Sources */,
+				926521E820D2743D00859068 /* NSOutlineView+Utils.swift in Sources */,
 				92790ECC20C990D200DC6962 /* VariantsHtmlStructure.swift in Sources */,
 				92E6D4D420BEFFD000167BC2 /* EditorQuestionChecksVC.swift in Sources */,
 				92D94B3B20AC49D9009C66EC /* QuestionChecks.swift in Sources */,
@@ -553,6 +557,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.evergreenbits.XGJsonEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -572,6 +577,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.evergreenbits.XGJsonEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

@@ -25,6 +25,7 @@ class ViewController: NSViewController {
     var selectedQuestionType: Any?
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         title = "EGEClient editor"
@@ -76,6 +77,7 @@ class ViewController: NSViewController {
     }
     
     func loadData(url: URL) {
+        
         //if let filePath = Bundle.main.path(forResource: "topics", ofType: "json") {
         
         //        print("filePath OK")
@@ -84,9 +86,12 @@ class ViewController: NSViewController {
             let decoder = JSONDecoder()
             let root = try decoder.decode(RootModel.self, from: data)
             self.rootModel = root
+            
 //            self.treeRoot = root.sections!.first!.topics!.first!.test!
             //            self.treeRoot = root.sections!.first!.topics!.first!.test?.questions[1]
                         self.treeRoot = root
+//            self.treeRoot = root.sections!.first!.topics![2].test?.questions[2]
+            
             print("OK")
             
             UserDefaults.standard.set(url, forKey: "recentJson")
@@ -101,6 +106,7 @@ class ViewController: NSViewController {
     }
     
     func saveData() {
+        
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let jsonData = try! encoder.encode(rootModel)
@@ -119,6 +125,7 @@ class ViewController: NSViewController {
     }
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
+        
         guard let outlineView = notification.object as? NSOutlineView else {
             return
         }
@@ -131,11 +138,13 @@ class ViewController: NSViewController {
     }
     
     func resetButtons() {
+        
         buttonAdd.isHidden = true
         addQuestionPopupButton.isHidden = true
     }
     
     func setupActions(_ item: Any) {
+        
         resetButtons()
         
         if let _ = item as? Section {
@@ -157,7 +166,12 @@ class ViewController: NSViewController {
         }
         
         if let _ = item as? QuestionChecks {
-            buttonAdd.title = "+ вопрос"
+            buttonAdd.title = "+ вариант"
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? QuestionChecksVariant {
+            buttonAdd.title = "+ вариант"
             buttonAdd.isHidden = false
         }
         
@@ -210,9 +224,20 @@ class ViewController: NSViewController {
             buttonAdd.title = "+ оф. вопр."
             buttonAdd.isHidden = false
         }
+        
+        if let _ = item as? [VariantsStructureElement] {
+            buttonAdd.title = "+ оф. вар."
+            buttonAdd.isHidden = false
+        }
+        
+        if let _ = item as? VariantsStructureElement {
+            buttonAdd.title = "+ оф. вар."
+            buttonAdd.isHidden = false
+        }
     }
     
     @IBAction func buttonAddClicked(_ sender: Any) {
+        
         let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
         guard let item = possibleItem else {return}
         let parent = outlineView.parent(forItem: item)
@@ -220,139 +245,79 @@ class ViewController: NSViewController {
         switch item {
             
         case let section as Section:
-            
-            let index = rootModel.sections?.index(of: section)
-            let newSection = Section.create()
-            let nextIndex = index!.advanced(by: 1)
-            rootModel.sections?.insert(newSection, at: nextIndex)
+
+            outlineView.addAfter(item: section, parent: rootModel, arrayKeyPath: "sections", type: Section.self)
             outlineView.reloadItem(parent)
-            
-            let indexSet = IndexSet.init(integer: nextIndex)
-            outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
             
         case let topic as Topic:
             
-            let parentSection = parent as! Section
-            let index = parentSection.topics!.index(of: topic)
-            let newTopic = Topic.create()
-            let nextIndex = index!.advanced(by: 1)
-            parentSection.topics!.insert(newTopic, at: nextIndex)
-            outlineView.reloadItem(parent, reloadChildren: true)
-            
-            let indexSet = IndexSet.init(integer: nextIndex)
-            outlineView.selectRowIndexes(indexSet, byExtendingSelection: false)
-            
+            outlineView.addAfter(item: topic, arrayKeyPath: "topics", itemType: Topic.self, parentType: Section.self)
+
         case let checks as QuestionChecks:
             
             let newVariant = QuestionChecksVariant.create()
             checks.variants.append(newVariant)
             outlineView.reloadItem(checks, reloadChildren: true)
             
+        case let checksVariant as QuestionChecksVariant:
+            
+            outlineView.addAfter(item: checksVariant, arrayKeyPath: "variants", itemType: QuestionChecksVariant.self, parentType: QuestionChecks.self)
+
         case let gapsVariant as QuestionGapsVariant:
             
-            let parentGaps = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionGaps
-            let index = parentGaps.variants!.index(of: gapsVariant)
-            let newVariant = QuestionGapsVariant.create()
-            let nextIndex = index!.advanced(by: 1)
-            parentGaps.variants!.insert(newVariant, at: nextIndex)
-            outlineView.reloadItem(parentGaps, reloadChildren: true)
-            outlineView.expandItem(parentGaps.variants, expandChildren: true)
-   
-        case _ as [QuestionGapsVariant]:
+            outlineView.addAfter(item: gapsVariant, arrayKeyPath: "variants", itemType: QuestionGapsVariant.self, parentType: QuestionGaps.self)
+
+        case let gapsVariants as [QuestionGapsVariant]:
             
-            let parentGaps = outlineView.parent(forItem: item) as! QuestionGaps
-            let newVariant = QuestionGapsVariant.create()
-            parentGaps.variants!.append(newVariant)
-            
-            outlineView.reloadItem(parentGaps, reloadChildren: true)
-            outlineView.expandItem(parentGaps.variants, expandChildren: true)
+            outlineView.addChild(to: gapsVariants, arrayKeyPath: "variants", itemType: QuestionGapsVariant.self, parentType: QuestionGaps.self)
             
         case let gapsItem as QuestionGapsItem:
             
-            let parentGaps = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionGaps
-            let index = parentGaps.items!.index(of: gapsItem)
-            let newItem = QuestionGapsItem.create()
-            let nextIndex = index!.advanced(by: 1)
-            parentGaps.items!.insert(newItem, at: nextIndex)
-            outlineView.reloadItem(parentGaps, reloadChildren: true)
-            outlineView.expandItem(parentGaps.items, expandChildren: true)
+            outlineView.addAfter(item: gapsItem, arrayKeyPath: "items", itemType: QuestionGapsItem.self, parentType: QuestionGaps.self)
+
+        case let gapsItems as [QuestionGapsItem]:
             
-        case _ as [QuestionGapsItem]:
-            
-            let parentGaps = outlineView.parent(forItem: item) as! QuestionGaps
-            let newItem = QuestionGapsItem.create()
-            parentGaps.items!.append(newItem)
-            
-            outlineView.reloadItem(parentGaps, reloadChildren: true)
-            outlineView.expandItem(parentGaps.items, expandChildren: true)
+            outlineView.addChild(to: gapsItems, arrayKeyPath: "items", itemType: QuestionGapsItem.self, parentType: QuestionGaps.self)
             
         case let pairsItem as QuestionPairsItem:
             
-            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
-            let index = parentPairs.items!.index(of: pairsItem)
-            let newItem = QuestionPairsItem.create()
-            let nextIndex = index!.advanced(by: 1)
-            parentPairs.items!.insert(newItem, at: nextIndex)
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.items, expandChildren: true)
+            outlineView.addAfter(item: pairsItem, arrayKeyPath: "items", itemType: QuestionPairsItem.self, parentType: QuestionPairs.self)
+
+        case let questionPairItems as [QuestionPairsItem]:
             
-        case _ as [QuestionPairsItem]:
-            
-            let parentPairs = outlineView.parent(forItem: item) as! QuestionPairs
-            let newItem = QuestionPairsItem.create()
-            parentPairs.items!.append(newItem)
-            
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.items, expandChildren: true)
+            outlineView.addChild(to: questionPairItems, arrayKeyPath: "items", itemType: QuestionPairsItem.self, parentType: QuestionPairs.self)
             
         case let pairsVariant as QuestionPairsVariant:
             
-            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
-            let index = parentPairs.variants!.index(of: pairsVariant)
-            let newVariant = QuestionPairsVariant.create()
-            let nextIndex = index!.advanced(by: 1)
-            parentPairs.variants!.insert(newVariant, at: nextIndex)
+            outlineView.addAfter(item: pairsVariant, arrayKeyPath: "variants", itemType: QuestionPairsVariant.self, parentType: QuestionPairs.self)
             
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.variants, expandChildren: true)
+        case let questionPairVariants as [QuestionPairsVariant]:
             
-        case _ as [QuestionPairsVariant]:
-            
-            let parentPairs = outlineView.parent(forItem: item) as! QuestionPairs
-            let newVariant = QuestionPairsVariant.create()
-            parentPairs.variants!.append(newVariant)
-            
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.variants, expandChildren: true)
+            outlineView.addChild(to: questionPairVariants, arrayKeyPath: "variants", itemType: QuestionPairsVariant.self, parentType: QuestionPairs.self)
             
         case let itemsElement as QuestionsStructureElement:
             
-            let parentPairs = outlineView.parent(forItem:outlineView.parent(forItem: outlineView.parent(forItem: item))) as! QuestionPairs
-            let index = parentPairs.itemsHtmlStructure.elements.index(of: itemsElement)
-            let newElement = QuestionsStructureElement(text: "")
-            let nextIndex = index!.advanced(by: 1)
-            parentPairs.itemsHtmlStructure.elements.insert(newElement, at: nextIndex)
+            outlineView.addAfter(item: itemsElement, arrayKeyPath: "itemsHtmlStructure.elements", itemType: QuestionsStructureElement.self, parentType: QuestionPairs.self)
             
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.itemsHtmlStructure.elements, expandChildren: true)
+        case let questionsStructureElements as [QuestionsStructureElement]:
             
-        case _ as [QuestionsStructureElement]:
+            outlineView.addChild(to: questionsStructureElements, arrayKeyPath: "itemsHtmlStructure.elements", itemType: QuestionsStructureElement.self, parentType: QuestionPairs.self)
+
+        case let itemsElement as VariantsStructureElement:
             
-            let parentPairs = outlineView.parent(forItem: outlineView.parent(forItem: item)) as! QuestionPairs
-            let newElement = QuestionsStructureElement(text: "")
-            parentPairs.itemsHtmlStructure.elements.append(newElement)
+            outlineView.addAfter(item: itemsElement, arrayKeyPath: "variantHtmlStructure.elements", itemType: VariantsStructureElement.self, parentType: QuestionPairs.self)
             
-            outlineView.reloadItem(parentPairs, reloadChildren: true)
-            outlineView.expandItem(parentPairs.itemsHtmlStructure.elements, expandChildren: true)
+        case let variantsStructureElement as [VariantsStructureElement]:
             
+            outlineView.addChild(to: variantsStructureElement, arrayKeyPath: "variantHtmlStructure.elements", itemType: VariantsStructureElement.self, parentType: QuestionPairs.self)
+
         default:
             return
         }
     }
-    
-    
-    
+ 
     @IBAction func addQuestionTouched(_ sender: Any) {
+        
         let popup: NSPopUpButton = sender as! NSPopUpButton
         let index = popup.indexOfSelectedItem
         
@@ -373,6 +338,7 @@ class ViewController: NSViewController {
     }
     
     func createQuestion(questionType: QuestionType) {
+        
         let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
         guard let item = possibleItem else {return}
         let parent = outlineView.parent(forItem: item)
@@ -657,7 +623,9 @@ extension ViewController: NSOutlineViewDelegate {
 }
 
 public extension NSView {
+    
     func addFillSuperviewConstraints() {
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         let viewsDict = ["view": self]
         self.superview?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: viewsDict))

@@ -12,8 +12,8 @@ import Cocoa
 class Topic: NSObject, Codable {
     var id: Int?
     @objc var name: String?
-    var lesson: Lesson?
-    var test: TopicTest?
+    @objc var lesson: Lesson?
+    @objc var test: TopicTest?
 }
 
 extension Topic: Creatable {

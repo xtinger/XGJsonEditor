@@ -39,6 +39,17 @@ class QuestionsStructureElement: NSObject {
     }
 }
 
+extension QuestionsStructureElement: Creatable {
+    class func create() -> Self {
+        return create(type: self)
+    }
+    
+    class func create<T>(type: T.Type) -> T {
+        let element = QuestionsStructureElement(text: "")
+        return element as! T
+    }
+}
+
 extension QuestionsStructureElement: Expandable {
     var isExpandable: Bool {
         return false
@@ -56,7 +67,7 @@ extension QuestionsStructureElement: TextFieldPresentable {
 class QuestionsHtmlStructure: NSObject {
     var title: QuestionsStructureTitle = QuestionsStructureTitle(text:"")
     
-    var elements: [QuestionsStructureElement] = []
+    @objc var elements: [QuestionsStructureElement] = []
     
     var htmlOutput: String {
         get {

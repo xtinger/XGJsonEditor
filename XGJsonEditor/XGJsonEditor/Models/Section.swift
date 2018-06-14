@@ -14,8 +14,8 @@ class Section: NSObject, Codable {
     @objc var name: String?
     @objc var path: String?
     var isFree: Bool?
-    var topics: [Topic]?
-    var sectionTest: SectionTest? {
+    @objc var topics: [Topic]?
+    @objc var sectionTest: SectionTest? {
         didSet {
             sectionTest?.parent = self
         }
