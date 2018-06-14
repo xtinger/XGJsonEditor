@@ -28,7 +28,7 @@ class ViewController: NSViewController {
         
         super.viewDidLoad()
         
-        title = "EGEClient editor"
+        view.window?.title = "EGEClient editor"
         
         //        loadData()
         outlineView.delegate = self
