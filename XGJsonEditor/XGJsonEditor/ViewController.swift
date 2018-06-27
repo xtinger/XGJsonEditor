@@ -590,6 +590,12 @@ class ViewController: NSViewController {
             viewController = vc
         }
         
+        if let lesson = item as? Lesson {
+            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorLesson")) as! EditorLesson
+            vc.lesson = lesson
+            viewController = vc
+        }
+        
         if let questionChecks = item as? QuestionChecks {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionChecksVC")) as! EditorQuestionChecksVC
             
