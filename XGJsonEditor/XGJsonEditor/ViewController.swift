@@ -15,6 +15,7 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var buttonAdd: NSButton!
     @IBOutlet weak var addQuestionPopupButton: NSPopUpButton!
+    @IBOutlet weak var buttonDelete: NSButton!
     
     
     var rootModel : RootModel!
@@ -98,6 +99,8 @@ class ViewController: NSViewController {
             
             outlineView.reloadData()
             
+            outlineView.select(item: root.sections!.first!)
+            
             //                saveData()
         }
         catch {
@@ -141,6 +144,7 @@ class ViewController: NSViewController {
         
         buttonAdd.isHidden = true
         addQuestionPopupButton.isHidden = true
+        buttonDelete.isHidden = true
     }
     
     func setupActions(_ item: Any) {
@@ -150,11 +154,13 @@ class ViewController: NSViewController {
         if let _ = item as? Section {
             buttonAdd.title = "+ раздел"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? Topic {
             buttonAdd.title = "+ тема"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? Test {
@@ -163,6 +169,7 @@ class ViewController: NSViewController {
         
         if let _ = item as? Question {
             addQuestionPopupButton.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? QuestionChecks {
@@ -173,11 +180,13 @@ class ViewController: NSViewController {
         if let _ = item as? QuestionChecksVariant {
             buttonAdd.title = "+ вариант"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? QuestionGapsVariant {
             buttonAdd.title = "+ вариант"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? [QuestionGapsVariant] {
@@ -188,6 +197,7 @@ class ViewController: NSViewController {
         if let _ = item as? QuestionGapsItem {
             buttonAdd.title = "+ ответ"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? [QuestionGapsItem] {
@@ -198,6 +208,7 @@ class ViewController: NSViewController {
         if let _ = item as? QuestionPairsItem {
             buttonAdd.title = "+ вопрос"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? [QuestionPairsItem] {
@@ -208,6 +219,7 @@ class ViewController: NSViewController {
         if let _ = item as? QuestionPairsVariant {
             buttonAdd.title = "+ вариант"
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? [QuestionPairsVariant] {
@@ -218,29 +230,40 @@ class ViewController: NSViewController {
         if let _ = item as? [QuestionsStructureElement] {
             buttonAdd.title = "+ оф. вопр."
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? QuestionsStructureElement {
             buttonAdd.title = "+ оф. вопр."
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? [VariantsStructureElement] {
             buttonAdd.title = "+ оф. вар."
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
         
         if let _ = item as? VariantsStructureElement {
             buttonAdd.title = "+ оф. вар."
             buttonAdd.isHidden = false
+            buttonDelete.isHidden = false
         }
     }
     
     @IBAction func buttonAddClicked(_ sender: Any) {
         
         let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
+        let parent = outlineView.parent(forItem: possibleItem)
+        
+        
+//        if parent == nil {
+//            outlineView.addAfter(item: nil, parent: rootModel, arrayKeyPath: "sections", type: Section.self)
+//            outlineView.reloadItem(parent)
+//        }
+        
         guard let item = possibleItem else {return}
-        let parent = outlineView.parent(forItem: item)
         
         switch item {
             
@@ -315,6 +338,169 @@ class ViewController: NSViewController {
             return
         }
     }
+    
+    @IBAction func buttonDeleteClicked(_ sender: Any) {
+        let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
+        guard let item = possibleItem else {return}
+        let parent = outlineView.parent(forItem: item) ?? rootModel
+        
+        switch item {
+            
+        case let section as Section:
+            
+            if (rootModel.sections!.count == 1) {
+                print("Нельзя удалять единственный элемент!")
+                break
+            }
+            
+            if let index = rootModel.sections!.index(of: section) {
+                rootModel.sections!.remove(at: index)
+                outlineView.removeItems(at: IndexSet(integer: index), inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
+            }
+            
+        case let topic as Topic:
+ 
+            if let section = parent as? Section {
+                
+                if (section.topics!.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = section.topics!.index(of: topic) {
+                    section.topics!.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: section, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                }
+            }
+            
+        case let question as Question:
+            
+            if let test = parent as? Test {
+                if let index = test.questions.index(of: question) {
+                    test.questions.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: test, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                }
+            }
+            
+        case let checksVariant as QuestionChecksVariant:
+            
+            if let checks = parent as? QuestionChecks {
+                if let index = checks.variants.index(of: checksVariant) {
+                    checks.variants.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: checks, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                }
+            }
+            
+        case let gapsVariant as QuestionGapsVariant:
+            
+            if let gaps = outlineView.findParent(of: gapsVariant, type: QuestionGaps.self) {
+                
+                if (gaps.variants!.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = gaps.variants!.index(of: gapsVariant) {
+                    gaps.variants!.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                }
+            }
+            
+        case let gapsItem as QuestionGapsItem:
+            
+            if let gaps = outlineView.findParent(of: gapsItem, type: QuestionGaps.self) {
+                
+                if (gaps.items!.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = gaps.items!.index(of: gapsItem) {
+                    gaps.items!.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                }
+                outlineView.reloadItem(gaps, reloadChildren: true)
+                outlineView.expandItem(gaps, expandChildren: true)
+            }
+  
+        case let pairsItem as QuestionPairsItem:
+            
+            if let pairs = outlineView.findParent(of: pairsItem, type: QuestionPairs.self) {
+                
+                if (pairs.items!.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = pairs.items!.index(of: pairsItem) {
+                    pairs.items!.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                    
+                    outlineView.reloadItem(pairs, reloadChildren: true)
+                    outlineView.expandItem(pairs, expandChildren: true)
+                }
+            }
+    
+        case let pairsVariant as QuestionPairsVariant:
+            
+            if let pairs = outlineView.findParent(of: pairsVariant, type: QuestionPairs.self) {
+                
+                if (pairs.variants!.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = pairs.variants!.index(of: pairsVariant) {
+                    pairs.variants!.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: pairs, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                    
+                    outlineView.reloadItem(pairs, reloadChildren: true)
+                    outlineView.expandItem(pairs, expandChildren: true)
+                }
+            }
+            
+        case let itemsElement as QuestionsStructureElement:
+            
+            if let questionsHtmlStructure = outlineView.findParent(of: itemsElement, type: QuestionsHtmlStructure.self) {
+                if (questionsHtmlStructure.elements.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = questionsHtmlStructure.elements.index(of: itemsElement) {
+                    questionsHtmlStructure.elements.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: questionsHtmlStructure.elements, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                    
+                    if let pairs = outlineView.findParent(of: itemsElement, type: QuestionPairs.self) {
+                        outlineView.reloadItem(pairs, reloadChildren: true)
+                        outlineView.expandItem(pairs, expandChildren: true)
+                    }
+                }
+            }
+            
+        case let itemsElement as VariantsStructureElement:
+            
+            if let variantsHtmlStructure = outlineView.findParent(of: itemsElement, type: VariantsHtmlStructure.self) {
+                if (variantsHtmlStructure.elements.count == 1) {
+                    print("Нельзя удалять единственный элемент!")
+                    break
+                }
+                
+                if let index = variantsHtmlStructure.elements.index(of: itemsElement) {
+                    variantsHtmlStructure.elements.remove(at: index)
+                    outlineView.removeItems(at: IndexSet(integer: index), inParent: variantsHtmlStructure.elements, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                    
+                    if let pairs = outlineView.findParent(of: itemsElement, type: QuestionPairs.self) {
+                        outlineView.reloadItem(pairs, reloadChildren: true)
+                        outlineView.expandItem(pairs, expandChildren: true)
+                    }
+                }
+            }
+        default:
+            return
+        }
+    }
+    
  
     @IBAction func addQuestionTouched(_ sender: Any) {
         
@@ -359,6 +545,13 @@ class ViewController: NSViewController {
             index = questions.index(of: question)
         }
         
+        if let lessonQuickTest = parentTest as? LessonQuickTest {
+            guard lessonQuickTest.questions.count == 0 else {
+                print("В тесте по лекции не может быть более одного вопроса")
+                return
+            }
+        }
+        
         if var questions = questions, let test = parentTest {
             let newQuestion = QuestionFactory.create(type: questionType)
             if let index = index {
@@ -370,6 +563,7 @@ class ViewController: NSViewController {
             test.questions = questions
             
             outlineView.reloadItem(test, reloadChildren: true)
+            outlineView.expandItem(test, expandChildren: true)
         }
     }
     

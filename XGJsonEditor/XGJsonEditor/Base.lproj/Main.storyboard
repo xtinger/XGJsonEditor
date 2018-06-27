@@ -747,12 +747,24 @@
                                                             <action selector="addQuestionTouched:" target="XfG-lQ-9wD" id="QAV-jq-vSX"/>
                                                         </connections>
                                                     </popUpButton>
+                                                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GMM-Js-vtg">
+                                                        <rect key="frame" x="-6" y="2" width="92" height="32"/>
+                                                        <buttonCell key="cell" type="push" title="Удалить" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="v9G-Bk-hQS">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="buttonDeleteClicked:" target="XfG-lQ-9wD" id="SY9-Es-b7r"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -867,6 +879,7 @@
                     <connections>
                         <outlet property="addQuestionPopupButton" destination="zx2-8g-Gbx" id="yAh-PZ-Fkg"/>
                         <outlet property="buttonAdd" destination="xrQ-Iu-1Pl" id="gjA-1a-cfJ"/>
+                        <outlet property="buttonDelete" destination="GMM-Js-vtg" id="pRW-GA-g4b"/>
                         <outlet property="editorContainerView" destination="oqf-Gy-ga2" id="YDa-KA-L3n"/>
                         <outlet property="outlineView" destination="84z-W7-TQT" id="xKf-Lb-ZGO"/>
                     </connections>

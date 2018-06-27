@@ -45,12 +45,13 @@ extension NSOutlineView {
     }
     
     //* Добавить item типа itemType в массив по пути arrayKeyPath, найти обновить объект дерева с типом parentType *//
-    func addAfter<Item:Equatable & Creatable, Parent:NSObject>(item: Any, arrayKeyPath: String, itemType: Item.Type, parentType:Parent.Type) {
+    @discardableResult
+    func addAfter<Item:Equatable & Creatable, Parent:NSObject>(item: Any, arrayKeyPath: String, itemType: Item.Type, parentType:Parent.Type) -> Item? {
         
         if let parent = findParent(of: item, type: Parent.self) {
 
-            guard var array = parent.mutableArrayValue(forKeyPath: arrayKeyPath) as? [Item] else {return}
-            guard let item = item as? Item else {return}
+            guard var array = parent.mutableArrayValue(forKeyPath: arrayKeyPath) as? [Item] else {return nil}
+            guard let item = item as? Item else {return nil}
             
             let newItem = Item.create()
             if let index = array.index(of: item) {
@@ -68,28 +69,72 @@ extension NSOutlineView {
             
             reloadItem(parent, reloadChildren: true)
             expandItem(array, expandChildren: true)
+            
+            return newItem
         }
+        
+        return nil
     }
     
     //* Добавить item типа itemType в массив array, обновить объект дерева parent *//
-    func addAfter<Item:Equatable & Creatable>(item: Any, parent: AnyObject, arrayKeyPath: String, type: Item.Type) {
+    //* Если item не задан, просто добавляем *//
+    @discardableResult
+    func addAfter<Item:Equatable & Creatable>(item: Any?, parent: AnyObject, arrayKeyPath: String, type: Item.Type) -> Item?  {
         
-        guard let item = item as? Item else {return}
 //        guard let parent = parent else {return}
-        guard var array = parent.mutableArrayValue(forKeyPath: arrayKeyPath) as? [Item] else {return}
+        guard var array = parent.mutableArrayValue(forKeyPath: arrayKeyPath) as? [Item] else {return nil}
         
         let newItem = Item.create()
-        if let index = array.index(of: item) {
-            let nextIndex = index.advanced(by: 1)
-            array.insert(newItem, at: nextIndex)
+        
+        if let item = item as? Item {
+            if let index = array.index(of: item) {
+                let nextIndex = index.advanced(by: 1)
+                array.insert(newItem, at: nextIndex)
+            }
+            else {
+                array.append(newItem)
+            }
         }
         else {
             array.append(newItem)
         }
-        
+
         parent.setValue(array, forKeyPath: arrayKeyPath)
         
         reloadItem(parent, reloadChildren: true)
         expandItem(array, expandChildren: true)
+        
+        return newItem
+    }
+    
+    
+}
+
+extension NSOutlineView {
+    
+    func expandParents(forItem item: Any?) {
+        var item = item
+        while item != nil {
+            let parentItem = parent(forItem: item)
+            if !isExpandable(parentItem) {
+                break
+            }
+            if !isItemExpanded(parentItem) {
+                expandItem(item)
+            }
+            item = parentItem
+        }
+    }
+    
+    func select(item: Any?) {
+        var index = row(forItem: item)
+        if index < 0 {
+            expandParents(forItem: item)
+            index = row(forItem: item)
+            if index < 0 {
+                return
+            }
+        }
+        selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
     }
 }
