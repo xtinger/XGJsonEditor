@@ -252,6 +252,9 @@ class ViewController: NSViewController {
         }
     }
     
+    @IBAction func refresh(_ sender: Any) {
+    }
+    
     @IBAction func buttonAddClicked(_ sender: Any) {
         
         let possibleItem = outlineView.item(atRow: outlineView.selectedRow)
@@ -592,6 +595,7 @@ class ViewController: NSViewController {
         
         if let lesson = item as? Lesson {
             let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorLesson")) as! EditorLesson
+            vc.pathTextField.bind(NSBindingName(rawValue: "value"), to: lesson, withKeyPath: "path", options: nil)
             vc.lesson = lesson
             viewController = vc
         }
@@ -692,6 +696,7 @@ class ViewController: NSViewController {
         
         if let vc = viewController {
             editorContainerView.addSubview(vc.view)
+            self.addChildViewController(vc)
             vc.view.addFillSuperviewConstraints()
         }
     }
