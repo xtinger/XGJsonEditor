@@ -36,26 +36,79 @@ class EditorLesson: EditorBaseVC {
             let lessonUrl = jsonUrl.deletingLastPathComponent().appendingPathComponent(path).appendingPathExtension("html")
             print(lessonUrl)
             do {
-            let data = try Data(contentsOf: lessonUrl)
-            webView.load(data, mimeType: "text/html", characterEncodingName: "utf8", baseURL: NSURL(string: "")! as URL)
+                let data = try Data(contentsOf: lessonUrl)
+                webView.load(data, mimeType: "text/html", characterEncodingName: "utf8", baseURL: NSURL(string: "")! as URL)
             } catch {
                 
             }
-//            let request = URLRequest(url: lessonUrl)
-//            webView.load(request)
+            //            let request = URLRequest(url: lessonUrl)
+            //            webView.load(request)
+        }
+    }
+    
+    @IBAction func open(_ sender: Any) {
+        let dialog = NSOpenPanel()
+        
+        guard let lesson = lesson else {return}
+        
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            let path = jsonUrl.deletingLastPathComponent().absoluteString
+            dialog.directoryURL = NSURL.fileURL(withPath: path, isDirectory: true)
+        }
+        else {
+            let launcherLogPathWithTilde = "~/Documents" as NSString
+            let expandedLauncherLogPath = launcherLogPathWithTilde.expandingTildeInPath
+            dialog.directoryURL = NSURL.fileURL(withPath: expandedLauncherLogPath, isDirectory: true)
+        }
+        
+        dialog.title                   = "Choose an .html file";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseDirectories    = true;
+        dialog.canCreateDirectories    = true;
+        dialog.allowsMultipleSelection = false;
+        dialog.allowedFileTypes        = ["html"]
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let resultUrl = dialog.url {
+                if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+                    let rootUrl = jsonUrl.deletingLastPathComponent()
+                    
+                    if resultUrl.absoluteString.hasPrefix(rootUrl.absoluteString) {
+                        var rel = resultUrl.absoluteString.replacingOccurrences(of: rootUrl.absoluteString, with: "")
+                        if rel.hasSuffix(".html") {
+                            rel.removeLast(5)
+                        }
+                        lesson.path = rel
+                        pathTextField.stringValue = rel
+                        
+                        load()
+                    }
+                
+                }
+                
+            }
         }
     }
     
     @objc func edit() {
-        if let path = lesson?.path, let root = UserDefaults.standard.url(forKey: "recentJson") {
+        
+        if let root = UserDefaults.standard.url(forKey: "recentJson") {
             var root1 = root.deletingLastPathComponent().absoluteString
             root1.removeFirst(7)
-            let path1 = "\(path).html"
-//            NSWorkspace.shared.selectFile(path1, inFileViewerRootedAtPath: root1)
             
-            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: root1)
+            if let path = lesson?.path, !path.isEmpty {
+                
+                let path1 = "\(path).html"
+                //            NSWorkspace.shared.selectFile(path1, inFileViewerRootedAtPath: root1)
+                let fullPath = "\(root1)\(path1)"
+                NSWorkspace.shared.selectFile(fullPath, inFileViewerRootedAtPath: "")
+            }
+            else {
+                NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: root1)
+            }
         }
-        
+
     }
     
 //    @IBAction @objc func edit(_ sender: AnyObject) {

@@ -34,7 +34,7 @@ extension Section: Creatable {
         section.path = ""
         section.topics = [Topic.create()]
         section.isFree = false
-        section.sectionTest = SectionTest()
+        section.sectionTest = SectionTest.create()
         section.sectionTest?.parent = section
         return section as! T
     }

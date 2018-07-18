@@ -1830,7 +1830,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="90" id="9hU-h6-QSb"/>
                                 </constraints>
-                                <buttonCell key="cell" type="push" title="Редактор" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oEx-XZ-KMh">
+                                <buttonCell key="cell" type="push" title="Найти" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oEx-XZ-KMh">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1849,21 +1849,36 @@
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rQq-24-L1u">
-                                <rect key="frame" x="22" y="260" width="199" height="22"/>
+                                <rect key="frame" x="22" y="260" width="94" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="0XN-s0-h1c">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SMK-9O-r4F">
+                                <rect key="frame" x="126" y="253" width="106" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="90" id="Q0n-ZI-HVj"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Открыть..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="e6A-xN-YWk">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="open:" target="Btx-FA-5gY" id="v5e-o8-s8H"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="AwL-64-bdq" secondAttribute="trailing" constant="20" id="2M8-Q7-h9j"/>
                             <constraint firstItem="Ww3-DJ-VWV" firstAttribute="top" secondItem="Hja-eW-7UG" secondAttribute="top" constant="19" id="67B-82-XZS"/>
                             <constraint firstItem="rQq-24-L1u" firstAttribute="top" secondItem="Hja-eW-7UG" secondAttribute="top" constant="18" id="7fV-7P-uQU"/>
                             <constraint firstItem="AwL-64-bdq" firstAttribute="top" secondItem="4dw-Lx-Fcy" secondAttribute="bottom" constant="8" id="BUI-fs-NAl"/>
-                            <constraint firstItem="Ww3-DJ-VWV" firstAttribute="leading" secondItem="rQq-24-L1u" secondAttribute="trailing" constant="17" id="DJm-j3-PIl"/>
+                            <constraint firstItem="SMK-9O-r4F" firstAttribute="top" secondItem="Hja-eW-7UG" secondAttribute="top" constant="19" id="Etz-z8-ajA"/>
+                            <constraint firstItem="AwL-64-bdq" firstAttribute="top" secondItem="SMK-9O-r4F" secondAttribute="bottom" constant="8" id="Xu0-vi-Hn2"/>
                             <constraint firstAttribute="trailing" secondItem="4dw-Lx-Fcy" secondAttribute="trailing" constant="20" id="cEH-qD-RxJ"/>
+                            <constraint firstItem="SMK-9O-r4F" firstAttribute="leading" secondItem="rQq-24-L1u" secondAttribute="trailing" constant="16" id="cNj-i5-3n6"/>
                             <constraint firstItem="AwL-64-bdq" firstAttribute="top" secondItem="Ww3-DJ-VWV" secondAttribute="bottom" constant="8" id="d4F-Yd-rtB"/>
                             <constraint firstItem="rQq-24-L1u" firstAttribute="leading" secondItem="Hja-eW-7UG" secondAttribute="leading" constant="22" id="ih0-4r-zMT"/>
                             <constraint firstItem="4dw-Lx-Fcy" firstAttribute="top" secondItem="Hja-eW-7UG" secondAttribute="top" constant="19" id="nne-2M-XIr"/>
@@ -1872,6 +1887,7 @@
                             <constraint firstItem="4dw-Lx-Fcy" firstAttribute="leading" secondItem="Ww3-DJ-VWV" secondAttribute="trailing" constant="12" id="uQd-MQ-5MD"/>
                             <constraint firstItem="Ww3-DJ-VWV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hja-eW-7UG" secondAttribute="leading" constant="20" symbolic="YES" id="upf-YQ-Zwr"/>
                             <constraint firstItem="AwL-64-bdq" firstAttribute="leading" secondItem="Hja-eW-7UG" secondAttribute="leading" constant="22" id="xV0-c5-QRI"/>
+                            <constraint firstItem="Ww3-DJ-VWV" firstAttribute="leading" secondItem="SMK-9O-r4F" secondAttribute="trailing" constant="12" id="y20-fE-Vjn"/>
                         </constraints>
                     </view>
                     <connections>

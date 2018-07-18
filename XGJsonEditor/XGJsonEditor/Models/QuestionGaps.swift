@@ -12,9 +12,9 @@ class QuestionGaps: Question {
     // html
     @objc var text: String?
     // список названий на кнопках с вариантами
-    @objc var variants: [QuestionGapsVariant]?
+    @objc var variants: [QuestionGapsVariant] = []
     // список пропусков с указанием правильного варианта
-    @objc var items : [QuestionGapsItem]?
+    @objc var items : [QuestionGapsItem] = []
     
     private enum CodingKeys: String, CodingKey {
         case text, variants, items
@@ -31,6 +31,19 @@ class QuestionGaps: Question {
         self.items = try container.decode([QuestionGapsItem].self, forKey: .items)
         try super.init(from: decoder)
     }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(text, forKey: .text)
+        
+        var variantsContainer = container.nestedUnkeyedContainer(forKey: .variants)
+        try variantsContainer.encode(contentsOf: variants)
+
+        var itemsContainer = container.nestedUnkeyedContainer(forKey: .items)
+        try itemsContainer.encode(contentsOf: items)
+    }
 
 }
 
@@ -42,6 +55,7 @@ extension QuestionGaps: Creatable {
     class func create<T>(type: T.Type) -> T {
         let created = QuestionGaps()
         created.type = .gaps
+        created.text = ""
         created.variants = [QuestionGapsVariant.create()]
         created.items = [QuestionGapsItem.create()]
         return created as! T
@@ -62,16 +76,11 @@ extension QuestionGaps: TreeNodeExpandable {
     func childAtIndex(index: Int) -> Any? {
         switch index {
         case 0:
-            if let variants = variants {
-                return variants
-            }
+            return variants
         case 1:
-            if let items = items {
-                return items
-            }
+            return items
         default:
             return nil
         }
-        return nil
     }
 }

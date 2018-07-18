@@ -14,11 +14,11 @@ class QuestionPairs: Question {
     // html содержимое списка
     @objc var itemsHtml: String?
     // список описаний вопросов
-    @objc var items: [QuestionPairsItem]?
+    @objc var items: [QuestionPairsItem] = []
     // html содержимое списка с вариантами ответов
     @objc var variantsHtml: String?
     // список описаний вариантов ответа
-    @objc var variants: [QuestionPairsVariant]?
+    @objc var variants: [QuestionPairsVariant] = []
     
     @objc var itemsHtmlStructure = QuestionsHtmlStructure(html: "")
     @objc var variantHtmlStructure = VariantsHtmlStructure(html: "")
@@ -54,11 +54,19 @@ class QuestionPairs: Question {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         
+        try container.encode(text, forKey: .text)
+        
         let itemsHtmlString = itemsHtmlStructure.htmlOutput
         try container.encode(itemsHtmlString, forKey: .itemsHtml)
         
         let variantsHtmlString = variantHtmlStructure.htmlOutput
         try container.encode(variantsHtmlString, forKey: .variantsHtml)
+        
+        var variantsContainer = container.nestedUnkeyedContainer(forKey: .variants)
+        try variantsContainer.encode(contentsOf: variants)
+        
+        var itemsContainer = container.nestedUnkeyedContainer(forKey: .items)
+        try itemsContainer.encode(contentsOf: items)
     }
 }
 
@@ -84,6 +92,8 @@ extension QuestionPairs: Creatable {
         let created = QuestionPairs()
         
         created.type = .pairs
+        created.text = ""
+        created.itemsHtml = ""
         created.items = [QuestionPairsItem()]
         created.variants = [QuestionPairsVariant()]
         
@@ -115,15 +125,11 @@ extension QuestionPairs: TreeNodeExpandable {
         case 0:
             return itemsHtmlStructure
         case 1:
-            if let items = items {
-                return items
-            }
+            return items
         case 2:
             return variantHtmlStructure
         case 3:
-            if let variants = variants {
-                return variants
-            }
+            return variants
         default:
             break
         }

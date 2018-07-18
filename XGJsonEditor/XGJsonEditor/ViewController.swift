@@ -28,9 +28,9 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        view.window?.title = "EGEClient editor"
-        
+
+//        view.window?.title = "EGEClient editor"
+
         //        loadData()
         outlineView.delegate = self
         outlineView.dataSource = self
@@ -48,6 +48,13 @@ class ViewController: NSViewController {
         //        NSDocumentController.shared.openDocument(self)
     }
     
+    override func viewWillAppear() {
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            view.window?.title = jsonUrl.lastPathComponent
+        }
+        
+    }
+    
     override var representedObject: Any? {
         didSet {
             // Update the view, if already loaded.
@@ -58,9 +65,15 @@ class ViewController: NSViewController {
         
         let dialog = NSOpenPanel()
         
-        let launcherLogPathWithTilde = "~/Documents" as NSString
-        let expandedLauncherLogPath = launcherLogPathWithTilde.expandingTildeInPath
-        dialog.directoryURL = NSURL.fileURL(withPath: expandedLauncherLogPath, isDirectory: true)
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            let path = jsonUrl.deletingLastPathComponent().absoluteString
+            dialog.directoryURL = NSURL.fileURL(withPath: path, isDirectory: true)
+        }
+        else {
+            let launcherLogPathWithTilde = "~/Documents" as NSString
+            let expandedLauncherLogPath = launcherLogPathWithTilde.expandingTildeInPath
+            dialog.directoryURL = NSURL.fileURL(withPath: expandedLauncherLogPath, isDirectory: true)
+        }
         
         dialog.title                   = "Choose a .json file";
         dialog.showsResizeIndicator    = true;
@@ -75,6 +88,48 @@ class ViewController: NSViewController {
                 loadData(url: result)
             }
         }
+    }
+    
+    @IBAction func saveDocument(_ sender: Any?) {
+        
+        view.window?.makeFirstResponder(nil)
+
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            saveData(url: jsonUrl)
+        }
+    }
+    
+    @IBAction func saveDocumentAs(_ sender: Any?) {
+        
+        view.window?.makeFirstResponder(nil)
+        
+        
+        let dialog = NSSavePanel()
+        
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            let path = jsonUrl.deletingLastPathComponent().absoluteString
+            dialog.directoryURL = NSURL.fileURL(withPath: path, isDirectory: true)
+        }
+        else {
+            let launcherLogPathWithTilde = "~/Documents" as NSString
+            let expandedLauncherLogPath = launcherLogPathWithTilde.expandingTildeInPath
+            dialog.directoryURL = NSURL.fileURL(withPath: expandedLauncherLogPath, isDirectory: true)
+        }
+
+        dialog.allowedFileTypes        = ["json"]
+        
+        if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson") {
+            dialog.directoryURL = jsonUrl.deletingLastPathComponent()
+        }
+        
+        dialog.nameFieldStringValue = "topics"
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let result = dialog.url {
+                saveData(url: result)
+            }
+        }
+        
     }
     
     func loadData(url: URL) {
@@ -101,6 +156,8 @@ class ViewController: NSViewController {
             
             outlineView.select(item: root.sections!.first!)
             
+            view.window?.title = url.lastPathComponent
+            
             //                saveData()
         }
         catch {
@@ -108,7 +165,7 @@ class ViewController: NSViewController {
         }
     }
     
-    func saveData() {
+    func saveData(url: URL?) {
         
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -116,15 +173,31 @@ class ViewController: NSViewController {
         //        let string = String(data: jsonData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         //        print(string)
         
-        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-        let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
-        let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
-        let fileManager = FileManager.default
-        
-        //        if !fileManager.fileExists(atPath: jsonFilePath.absoluteString) {
-        fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: jsonData, attributes: nil)
-        //        }
-        
+        if let url = url {
+//            let fileManager = FileManager.default
+//            fileManager.createFile(atPath: url.absoluteString, contents: jsonData, attributes: nil)
+            
+            do {
+                try jsonData.write(to: url)
+            }
+            catch {
+                print(error)
+            }
+        }
+        else {
+            
+            return
+            
+            let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+            let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
+            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
+            
+            let fileManager = FileManager.default
+            
+            //        if !fileManager.fileExists(atPath: jsonFilePath.absoluteString) {
+            fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: jsonData, attributes: nil)
+            //        }
+        }
     }
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -398,13 +471,13 @@ class ViewController: NSViewController {
             
             if let gaps = outlineView.findParent(of: gapsVariant, type: QuestionGaps.self) {
                 
-                if (gaps.variants!.count == 1) {
+                if (gaps.variants.count == 1) {
                     print("Нельзя удалять единственный элемент!")
                     break
                 }
                 
-                if let index = gaps.variants!.index(of: gapsVariant) {
-                    gaps.variants!.remove(at: index)
+                if let index = gaps.variants.index(of: gapsVariant) {
+                    gaps.variants.remove(at: index)
                     outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
                 }
             }
@@ -413,13 +486,13 @@ class ViewController: NSViewController {
             
             if let gaps = outlineView.findParent(of: gapsItem, type: QuestionGaps.self) {
                 
-                if (gaps.items!.count == 1) {
+                if (gaps.items.count == 1) {
                     print("Нельзя удалять единственный элемент!")
                     break
                 }
                 
-                if let index = gaps.items!.index(of: gapsItem) {
-                    gaps.items!.remove(at: index)
+                if let index = gaps.items.index(of: gapsItem) {
+                    gaps.items.remove(at: index)
                     outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
                 }
                 outlineView.reloadItem(gaps, reloadChildren: true)
@@ -430,13 +503,13 @@ class ViewController: NSViewController {
             
             if let pairs = outlineView.findParent(of: pairsItem, type: QuestionPairs.self) {
                 
-                if (pairs.items!.count == 1) {
+                if (pairs.items.count == 1) {
                     print("Нельзя удалять единственный элемент!")
                     break
                 }
                 
-                if let index = pairs.items!.index(of: pairsItem) {
-                    pairs.items!.remove(at: index)
+                if let index = pairs.items.index(of: pairsItem) {
+                    pairs.items.remove(at: index)
                     outlineView.removeItems(at: IndexSet(integer: index), inParent: parent, withAnimation: NSTableView.AnimationOptions.slideLeft)
                     
                     outlineView.reloadItem(pairs, reloadChildren: true)
@@ -448,13 +521,13 @@ class ViewController: NSViewController {
             
             if let pairs = outlineView.findParent(of: pairsVariant, type: QuestionPairs.self) {
                 
-                if (pairs.variants!.count == 1) {
+                if (pairs.variants.count == 1) {
                     print("Нельзя удалять единственный элемент!")
                     break
                 }
                 
-                if let index = pairs.variants!.index(of: pairsVariant) {
-                    pairs.variants!.remove(at: index)
+                if let index = pairs.variants.index(of: pairsVariant) {
+                    pairs.variants.remove(at: index)
                     outlineView.removeItems(at: IndexSet(integer: index), inParent: pairs, withAnimation: NSTableView.AnimationOptions.slideLeft)
                     
                     outlineView.reloadItem(pairs, reloadChildren: true)
@@ -572,7 +645,7 @@ class ViewController: NSViewController {
     
     func selectEditor(_ item: Any) {
         
-        saveData()
+        saveData(url: nil)
         
         for view in editorContainerView.subviews {
             view.removeFromSuperview()

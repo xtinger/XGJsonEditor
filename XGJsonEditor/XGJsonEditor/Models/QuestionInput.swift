@@ -32,6 +32,16 @@ class QuestionInput: Question {
         try super.init(from: decoder)
     }
     
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(html, forKey: .html)
+        try container.encode(correctAnswer, forKey: .correctAnswer)
+        try container.encode(correctComment, forKey: .correctComment)
+        try container.encode(incorrectComment, forKey: .incorrectComment)
+    }
+    
     override init() {
         super.init()
     }
@@ -45,6 +55,8 @@ extension QuestionInput: Creatable {
     class func create<T>(type: T.Type) -> T {
         let created = QuestionInput()
         created.type = .input
+        created.html = ""
+        
         return created as! T
     }
 }

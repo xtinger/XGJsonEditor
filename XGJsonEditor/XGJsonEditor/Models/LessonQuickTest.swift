@@ -23,7 +23,7 @@ extension LessonQuickTest: Creatable {
     
     class func create<T>(type: T.Type) -> T {
         let test = LessonQuickTest()
-        
+        test.id = IDGenerator.generate()
         return test as! T
     }
 }
