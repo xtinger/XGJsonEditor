@@ -10,7 +10,7 @@ import Cocoa
 
 // Тема
 class Topic: NSObject, Codable {
-    var id: Int?
+    var id: Int64?
     @objc var name: String?
     @objc var lesson: Lesson?
     @objc var test: TopicTest?
@@ -23,7 +23,7 @@ extension Topic: Creatable {
     
     class func create<T>(type: T.Type) -> T {
         let topic = Topic()
-        topic.id = IDGenerator.generate()
+        topic.id = Thread.current.nextFlakeID()
         topic.name = ""
         topic.lesson = Lesson.create()
         topic.test = TopicTest.create()

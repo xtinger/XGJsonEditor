@@ -11,7 +11,7 @@ import Cocoa
 class Test: NSObject, Codable {
     weak var parent: NSObject?
     
-    var id: Int?
+    var id: Int64?
     var questions: [Question] = []
     
     enum QuestionsKey: CodingKey {
@@ -28,7 +28,7 @@ class Test: NSObject, Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: QuestionsKey.self)
-        self.id = try container.decode(Int.self, forKey: QuestionsKey.id)
+        self.id = try container.decode(Int64.self, forKey: QuestionsKey.id)
         var arrayForType = try container.nestedUnkeyedContainer(forKey: QuestionsKey.questions)
         var questions = [Question]()
         var questionsArray = arrayForType

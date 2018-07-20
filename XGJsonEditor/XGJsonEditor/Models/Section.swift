@@ -10,7 +10,7 @@ import Cocoa
 
 // раздел
 class Section: NSObject, Codable {
-    var id: Int?
+    var id: Int64?
     @objc var name: String?
     @objc var path: String?
     var isFree: Bool?
@@ -29,7 +29,7 @@ extension Section: Creatable {
     
     class func create<T>(type: T.Type) -> T {
         let section = Section()
-        section.id = IDGenerator.generate()
+        section.id = Thread.current.nextFlakeID()
         section.name = ""
         section.path = ""
         section.topics = [Topic.create()]

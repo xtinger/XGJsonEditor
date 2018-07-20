@@ -33,12 +33,22 @@ class EditorLesson: EditorBaseVC {
     
     func load() {
         if let jsonUrl = UserDefaults.standard.url(forKey: "recentJson"), let lesson = lesson, let path = lesson.path {
-            let lessonUrl = jsonUrl.deletingLastPathComponent().appendingPathComponent(path).appendingPathExtension("html")
-            print(lessonUrl)
-            do {
-                let data = try Data(contentsOf: lessonUrl)
-                webView.load(data, mimeType: "text/html", characterEncodingName: "utf8", baseURL: NSURL(string: "")! as URL)
-            } catch {
+            
+            let lessonUrl: URL? = jsonUrl.deletingLastPathComponent().appendingPathComponent(path).appendingPathExtension("html")
+            
+//            if let noPercents = lessonUrl?.absoluteString.removingPercentEncoding {
+//                lessonUrl = URL(string: noPercents)
+//            }
+            
+            if let lessonUrl = lessonUrl {
+                
+                print(lessonUrl)
+                do {
+                    let data = try Data(contentsOf: lessonUrl)
+                    webView.load(data, mimeType: "text/html", characterEncodingName: "utf8", baseURL: NSURL(string: "")! as URL)
+                } catch {
+                    print(error)
+                }
                 
             }
             //            let request = URLRequest(url: lessonUrl)
@@ -79,6 +89,7 @@ class EditorLesson: EditorBaseVC {
                         if rel.hasSuffix(".html") {
                             rel.removeLast(5)
                         }
+                        rel = rel.removingPercentEncoding!
                         lesson.path = rel
                         pathTextField.stringValue = rel
                         

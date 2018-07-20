@@ -23,7 +23,7 @@ extension TopicTest: Creatable {
     
     class func create<T>(type: T.Type) -> T {
         let test = TopicTest()
-        test.id = IDGenerator.generate()
+        test.id = Thread.current.nextFlakeID()
         return test as! T
     }
 }

@@ -23,7 +23,7 @@ extension SectionTest: Creatable {
     
     class func create<T>(type: T.Type) -> T {
         let test = SectionTest()
-        test.id = IDGenerator.generate()
+        test.id = Thread.current.nextFlakeID()
         return test as! T
     }
 }

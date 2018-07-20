@@ -16,7 +16,7 @@ enum QuestionType: String, Codable {
 }
 
 class Question: NSObject, Codable {
-    var id: Int?
+    var id: Int64?
     var type: QuestionType?
 }
 
