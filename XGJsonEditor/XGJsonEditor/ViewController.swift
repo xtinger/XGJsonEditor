@@ -706,12 +706,14 @@ class ViewController: NSViewController {
         }
         
         if let questionGapsVariant = item as? QuestionGapsVariant {
-            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsVariantVC")) as! EditorQuestionGapsVariantVC
-            let valueTransformer = HTMLToAttributedString()
+            viewController = ViewController.makeSingleTextFieldEditor(title: "Текст варианта:", bindingModel: questionGapsVariant, withKeyPath: "text")
             
-            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
-            
-            viewController = vc
+//            let vc = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle: nil).instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "EditorQuestionGapsVariantVC")) as! EditorQuestionGapsVariantVC
+//            let valueTransformer = HTMLToAttributedString()
+//
+//            vc.textView.bind(NSBindingName(rawValue: "attributedString"), to: questionGapsVariant, withKeyPath: "text", options: [.valueTransformer: valueTransformer])
+//
+//            viewController = vc
         }
         
         if let questionGapsItem = item as? QuestionGapsItem {
